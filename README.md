@@ -1,6 +1,6 @@
 # endlessrunner2d
 
-Ein einfacher 2D-Endless-Runner / Auto-Scroller, entwickelt mit **Godot**.  
+Ein einfacher Auto-Scroller, entwickelt mit **Godot**.  
 Der Spieler bewegt sich automatisch durch das Level und weicht Hindernissen aus.
 
 ## Features
