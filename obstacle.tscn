@@ -1,0 +1,23 @@
+[gd_scene load_steps=3 format=3 uid="uid://bm6otxrfdubws"]
+
+[ext_resource type="Script" uid="uid://ctwqiry5fm6jn" path="res://obstacle.gd" id="1_sl1jc"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qcbvg"]
+size = Vector2(40, 80)
+
+[node name="Node2D" type="Node2D"]
+
+[node name="Obstacle" type="StaticBody2D" parent="."]
+modulate = Color(1.6409765, 0.43491632, 1.9114265, 1)
+script = ExtResource("1_sl1jc")
+
+[node name="ColorRect" type="ColorRect" parent="Obstacle"]
+custom_minimum_size = Vector2(40, 80)
+offset_left = -20.0
+offset_top = -40.0
+offset_right = 20.0
+offset_bottom = 40.0
+color = Color(17.34272, 0, 17.34272, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Obstacle"]
+shape = SubResource("RectangleShape2D_qcbvg")

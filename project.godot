@@ -1,0 +1,8 @@
+config_version=5
+
+[application]
+
+config/name="EndlessRunner2D"
+run/main_scene="uid://b18jjbobcv68o"
+config/features=PackedStringArray("4.5", "Forward Plus")
+config/icon="res://icon.svg"
