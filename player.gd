@@ -39,7 +39,16 @@ func check_collisions():
 		else:
 			game_over()
 
+const DEATH_EXPLOSION = preload("res://death_explosion.tscn")
+
 func game_over():
+	# Spawn explosion
+	var explosion = DEATH_EXPLOSION.instantiate()
+	explosion.global_position = global_position + Vector2(20, 20)
+	# Add to main scene (Game) so it's not removed if player is removed, 
+	# and to ensure it displays on top.
+	get_tree().current_scene.add_child(explosion)
+
 	# If GameManager exists, use it; otherwise reload scene directly
 	if has_node("../GameManager"):
 		var game_manager = get_node("../GameManager")
