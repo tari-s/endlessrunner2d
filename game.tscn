@@ -1,8 +1,9 @@
-[gd_scene load_steps=13 format=3 uid="uid://b18jjbobcv68o"]
+[gd_scene load_steps=14 format=3 uid="uid://b18jjbobcv68o"]
 
 [ext_resource type="Script" uid="uid://bkueuohdyhj7q" path="res://player.gd" id="1_feb5d"]
 [ext_resource type="Script" uid="uid://cn6ulq2sbejg7" path="res://game.gd" id="1_ryrav"]
 [ext_resource type="Script" uid="uid://dge7pqo288vcw" path="res://ceiling.gd" id="2_7jktm"]
+[ext_resource type="AudioStream" uid="uid://bivbvo2rq6g1v" path="res://game-over.mp3" id="3_hve3p"]
 [ext_resource type="Script" uid="uid://bf2wrtan650he" path="res://floor.gd" id="3_ryrav"]
 [ext_resource type="PackedScene" uid="uid://bm6otxrfdubws" path="res://obstacle.tscn" id="5_spawner"]
 [ext_resource type="Script" uid="uid://dnt5rmjfeyeaf" path="res://obstacle_spawner.gd" id="6_spawner"]
@@ -24,6 +25,7 @@ script = ExtResource("1_ryrav")
 
 [node name="GameManager" type="Node" parent="."]
 script = ExtResource("7_manager")
+game_over_sound = ExtResource("3_hve3p")
 
 [node name="Camera" type="Camera2D" parent="."]
 position = Vector2(600, 300)

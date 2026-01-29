@@ -10,6 +10,10 @@ enum GameState {
 var current_state: GameState = GameState.MENU
 static var is_restarting: bool = false
 
+# Audio
+@export var game_over_sound: AudioStream
+var audio_player: AudioStreamPlayer
+
 # Signals for UI to listen to
 signal game_started
 signal game_over
@@ -17,6 +21,11 @@ signal game_restarted
 
 func _ready():
 	process_mode = Node.PROCESS_MODE_ALWAYS  # Always process, even when paused
+	
+	# Setup Audio Player
+	audio_player = AudioStreamPlayer.new()
+	add_child(audio_player)
+	
 	if is_restarting:
 		start_game()
 		is_restarting = false
@@ -30,6 +39,11 @@ func start_game():
 func end_game():
 	current_state = GameState.GAME_OVER
 	get_tree().paused = true
+	
+	if game_over_sound:
+		audio_player.stream = game_over_sound
+		audio_player.play()
+		
 	game_over.emit()
 	print("Game over!")
 
