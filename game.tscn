@@ -31,14 +31,14 @@ game_over_sound = ExtResource("3_hve3p")
 position = Vector2(600, 300)
 
 [node name="Player" type="CharacterBody2D" parent="."]
-position = Vector2(200, 300)
+position = Vector2(600, 300)
 script = ExtResource("1_feb5d")
 
 [node name="ColorRect" type="ColorRect" parent="Player"]
 custom_minimum_size = Vector2(40, 40)
 offset_right = 40.0
 offset_bottom = 40.0
-color = Color(0.8884354, 0.0006378287, 0.8887384, 1)
+color = Color(0.3, 0.3, 1, 1)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
 position = Vector2(20, 20)
