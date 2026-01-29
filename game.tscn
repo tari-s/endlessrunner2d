@@ -1,10 +1,11 @@
 [gd_scene load_steps=10 format=3 uid="uid://b18jjbobcv68o"]
 
-[ext_resource type="Script" uid="uid://dg03q0r0b54sw" path="res://movingobstacle.gd" id="1_fc0e3"]
 [ext_resource type="Script" uid="uid://bkueuohdyhj7q" path="res://player.gd" id="1_feb5d"]
 [ext_resource type="Script" uid="uid://cn6ulq2sbejg7" path="res://game.gd" id="1_ryrav"]
 [ext_resource type="Script" uid="uid://dge7pqo288vcw" path="res://ceiling.gd" id="2_7jktm"]
 [ext_resource type="Script" uid="uid://bf2wrtan650he" path="res://floor.gd" id="3_ryrav"]
+[ext_resource type="PackedScene" uid="uid://bm6otxrfdubws" path="res://obstacle.tscn" id="5_spawner"]
+[ext_resource type="Script" uid="uid://dnt5rmjfeyeaf" path="res://obstacle_spawner.gd" id="6_spawner"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_y32ns"]
 size = Vector2(40, 40)
@@ -15,9 +16,6 @@ size = Vector2(1200, 40)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ryrav"]
 size = Vector2(1200, 40)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_eow3j"]
-size = Vector2(40, 80)
-
 [node name="Game" type="Node2D"]
 script = ExtResource("1_ryrav")
 
@@ -25,7 +23,7 @@ script = ExtResource("1_ryrav")
 position = Vector2(600, 300)
 
 [node name="Player" type="CharacterBody2D" parent="."]
-position = Vector2(580, 280)
+position = Vector2(200, 300)
 script = ExtResource("1_feb5d")
 
 [node name="ColorRect" type="ColorRect" parent="Player"]
@@ -63,15 +61,10 @@ color = Color(0, 0, 0, 1)
 position = Vector2(600, 20)
 shape = SubResource("RectangleShape2D_ryrav")
 
-[node name="MovingObstacle" type="StaticBody2D" parent="."]
-position = Vector2(1200, 300)
-script = ExtResource("1_fc0e3")
-
-[node name="ColorRect" type="ColorRect" parent="MovingObstacle"]
-offset_right = 40.0
-offset_bottom = 80.0
-color = Color(1, 0, 1, 1)
-
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="MovingObstacle"]
-position = Vector2(20, 40)
-shape = SubResource("RectangleShape2D_eow3j")
+[node name="ObstacleSpawner" type="Node2D" parent="."]
+script = ExtResource("6_spawner")
+obstacle_scene = ExtResource("5_spawner")
+spawn_interval = 3.0
+spawn_x_position = null
+initial_difficulty = null
+difficulty_increase_interval = 20.0
