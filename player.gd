@@ -19,6 +19,13 @@ func _physics_process(delta):
 
 	move_and_slide()
 	check_collisions()
+	check_bounds()
+
+func check_bounds():
+	# Check if player is off-screen (left or right)
+	# Assuming screen width 1200, allowing a small buffer of 50px
+	if global_position.x < -50 or global_position.x > 1250:
+		game_over()
 
 func check_collisions():
 	for i in range(get_slide_collision_count()):
