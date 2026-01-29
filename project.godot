@@ -13,7 +13,7 @@ config_version=5
 config/name="EndlessRunner2D"
 run/main_scene="uid://b18jjbobcv68o"
 config/features=PackedStringArray("4.5", "Forward Plus")
-config/icon="res://icon.svg"
+config/icon="uid://dedaegwr8jd4v"
 
 [display]
 

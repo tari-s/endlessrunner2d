@@ -23,6 +23,14 @@ size = Vector2(1200, 40)
 [node name="Game" type="Node2D"]
 script = ExtResource("1_ryrav")
 
+[node name="Background" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.9, 0.9, 0.9, 1)
+
 [node name="GameManager" type="Node" parent="."]
 script = ExtResource("7_manager")
 game_over_sound = ExtResource("3_hve3p")
@@ -38,7 +46,7 @@ script = ExtResource("1_feb5d")
 custom_minimum_size = Vector2(40, 40)
 offset_right = 40.0
 offset_bottom = 40.0
-color = Color(0.3, 0.3, 1, 1)
+color = Color(0.6, 0.6, 1, 1)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
 position = Vector2(20, 20)
@@ -50,7 +58,7 @@ script = ExtResource("2_7jktm")
 [node name="ColorRect" type="ColorRect" parent="Ceiling"]
 offset_right = 1200.0
 offset_bottom = 40.0
-color = Color(0, 0, 0, 1)
+color = Color(0.2, 0.2, 0.2, 1)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Ceiling"]
 position = Vector2(600, 20)
@@ -63,7 +71,7 @@ script = ExtResource("3_ryrav")
 [node name="ColorRect" type="ColorRect" parent="Floor"]
 offset_right = 1200.0
 offset_bottom = 40.0
-color = Color(0, 0, 0, 1)
+color = Color(0.2, 0.2, 0.2, 1)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Floor"]
 position = Vector2(600, 20)
