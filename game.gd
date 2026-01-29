@@ -6,8 +6,9 @@ const WORLD_HEIGHT := 600
 @onready var spawner = $ObstacleSpawner
 
 func _ready():
-	pass
+	pass  # Spawner will handle itself
 
+# Optional: Control spawning based on game state
 func pause_game():
 	if spawner:
 		spawner.pause_spawning()

@@ -2,4 +2,4 @@ extends "res://obstacle.gd"
 
 func _ready():
 	moving = false
-	deadly = true
+	deadly = false

@@ -34,7 +34,14 @@ func _ready():
 	current_difficulty = initial_difficulty
 
 func _on_spawn_timer_timeout():
-	spawn_pattern()
+	# Only spawn if game is playing (check if GameManager exists)
+	if has_node("../GameManager"):
+		var game_manager = get_node("../GameManager")
+		if game_manager and game_manager.is_playing():
+			spawn_pattern()
+	else:
+		# If no GameManager, always spawn (old behavior)
+		spawn_pattern()
 
 func _on_difficulty_timer_timeout():
 	if current_difficulty < 3:
@@ -74,7 +81,7 @@ func spawn_pattern():
 					collision.shape.size.y = obstacle_data.height
 					collision.position.y = obstacle_data.height / 2
 		
-		# Enable movement
+		# Enable movement (check if property exists)
 		if "moving" in obstacle:
 			obstacle.moving = true
 		

@@ -19,7 +19,7 @@ func set_height(new_height: float):
 		color_rect.offset_bottom = new_height
 		color_rect.offset_top = -new_height / 2
 		color_rect.offset_bottom = new_height / 2
-
+	
 	# Update CollisionShape2D if it exists
 	if has_node("CollisionShape2D"):
 		var collision = get_node("CollisionShape2D")
