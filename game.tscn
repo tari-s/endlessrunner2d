@@ -1,60 +1,77 @@
-[gd_scene load_steps=8 format=3 uid="uid://b18jjbobcv68o"]
+[gd_scene load_steps=10 format=3 uid="uid://b18jjbobcv68o"]
 
+[ext_resource type="Script" uid="uid://dg03q0r0b54sw" path="res://movingobstacle.gd" id="1_fc0e3"]
 [ext_resource type="Script" uid="uid://bkueuohdyhj7q" path="res://player.gd" id="1_feb5d"]
+[ext_resource type="Script" uid="uid://cn6ulq2sbejg7" path="res://game.gd" id="1_ryrav"]
 [ext_resource type="Script" uid="uid://dge7pqo288vcw" path="res://ceiling.gd" id="2_7jktm"]
-[ext_resource type="Script" uid="uid://ck5q6c1bhhvac" path="res://obstaclespawner.gd" id="2_fc0e3"]
-[ext_resource type="PackedScene" uid="uid://bm6otxrfdubws" path="res://obstacle.tscn" id="3_7jktm"]
 [ext_resource type="Script" uid="uid://bf2wrtan650he" path="res://floor.gd" id="3_ryrav"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_y32ns"]
 size = Vector2(40, 40)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_wtcfe"]
-size = Vector2(2000, 40)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7jktm"]
+size = Vector2(1200, 40)
 
-[node name="Node2D" type="Node2D"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ryrav"]
+size = Vector2(1200, 40)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_eow3j"]
+size = Vector2(40, 80)
+
+[node name="Game" type="Node2D"]
+script = ExtResource("1_ryrav")
+
+[node name="Camera" type="Camera2D" parent="."]
+position = Vector2(600, 300)
 
 [node name="Player" type="CharacterBody2D" parent="."]
+position = Vector2(580, 280)
 script = ExtResource("1_feb5d")
 
-[node name="Body" type="ColorRect" parent="Player"]
+[node name="ColorRect" type="ColorRect" parent="Player"]
 custom_minimum_size = Vector2(40, 40)
-offset_top = 304.0
 offset_right = 40.0
-offset_bottom = 344.0
+offset_bottom = 40.0
 color = Color(0.8884354, 0.0006378287, 0.8887384, 1)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
-position = Vector2(20, 324)
+position = Vector2(20, 20)
 shape = SubResource("RectangleShape2D_y32ns")
 
 [node name="Ceiling" type="StaticBody2D" parent="."]
 script = ExtResource("2_7jktm")
 
 [node name="ColorRect" type="ColorRect" parent="Ceiling"]
-custom_minimum_size = Vector2(3000, 40)
-offset_right = 2000.0
+offset_right = 1200.0
 offset_bottom = 40.0
 color = Color(0, 0, 0, 1)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Ceiling"]
-position = Vector2(1000, 20)
-shape = SubResource("RectangleShape2D_wtcfe")
+position = Vector2(600, 20)
+shape = SubResource("RectangleShape2D_7jktm")
 
 [node name="Floor" type="StaticBody2D" parent="."]
+position = Vector2(0, 560)
 script = ExtResource("3_ryrav")
 
 [node name="ColorRect" type="ColorRect" parent="Floor"]
-custom_minimum_size = Vector2(3000, 40)
-offset_top = 608.0
-offset_right = 2000.0
-offset_bottom = 648.0
+offset_right = 1200.0
+offset_bottom = 40.0
 color = Color(0, 0, 0, 1)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Floor"]
-position = Vector2(1000, 628)
-shape = SubResource("RectangleShape2D_wtcfe")
+position = Vector2(600, 20)
+shape = SubResource("RectangleShape2D_ryrav")
 
-[node name="ObstacleSpawner" type="Node2D" parent="."]
-script = ExtResource("2_fc0e3")
-obstacle_scene = ExtResource("3_7jktm")
+[node name="MovingObstacle" type="StaticBody2D" parent="."]
+position = Vector2(1200, 300)
+script = ExtResource("1_fc0e3")
+
+[node name="ColorRect" type="ColorRect" parent="MovingObstacle"]
+offset_right = 40.0
+offset_bottom = 80.0
+color = Color(1, 0, 1, 1)
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="MovingObstacle"]
+position = Vector2(20, 40)
+shape = SubResource("RectangleShape2D_eow3j")

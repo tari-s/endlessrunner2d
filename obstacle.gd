@@ -1,6 +1,11 @@
 extends StaticBody2D
 
-@export var move_speed := 200
+@export var deadly := true  # Kollision = Game Over
+@export var moving := false
+@export var speed := 200.0
 
-func _physics_process(delta):
-	position.x -= move_speed * delta
+func _process(delta):
+	if moving:
+		position.x -= speed * delta
+		if position.x < -100:
+			queue_free()
