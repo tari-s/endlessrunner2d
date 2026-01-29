@@ -6,11 +6,15 @@ class ObstacleData:
 	var y_position: float  # Vertical position (0-600)
 	var x_offset: float    # Horizontal offset from spawn point
 	var height: float      # Obstacle height
+	var deadly: bool       # Is it deadly?
+	var color: Color       # Visual color
 	
-	func _init(y: float, x: float = 0.0, h: float = 80.0):
+	func _init(y: float, x: float = 0.0, h: float = 80.0, is_deadly: bool = true, col: Color = Color(1, 0.3, 0.3)):
 		y_position = y
 		x_offset = x
 		height = h
+		deadly = is_deadly
+		color = col
 
 # Array of obstacles in this pattern
 var obstacles: Array[ObstacleData] = []

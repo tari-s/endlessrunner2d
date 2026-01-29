@@ -80,6 +80,14 @@ func spawn_pattern():
 				if collision.shape is RectangleShape2D:
 					collision.shape.size.y = obstacle_data.height
 					collision.position.y = obstacle_data.height / 2
+					
+		# Set Color
+		if obstacle.has_node("ColorRect"):
+			obstacle.get_node("ColorRect").color = obstacle_data.color
+			
+		# Set Deadly
+		if "deadly" in obstacle:
+			obstacle.deadly = obstacle_data.deadly
 		
 		# Enable movement (check if property exists)
 		if "moving" in obstacle:

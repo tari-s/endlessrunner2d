@@ -73,6 +73,22 @@ func _create_patterns():
 	pattern8.obstacles.append(ObstaclePattern.ObstacleData.new(440, 0.0, 120.0))
 	patterns.append(pattern8)
 
+	# Pattern 9: Safe Single (Green)
+	var pattern9 = ObstaclePattern.new()
+	pattern9.pattern_name = "Safe Single"
+	pattern9.difficulty = 1
+	# Non-deadly, Green Color
+	pattern9.obstacles.append(ObstaclePattern.ObstacleData.new(300, 0.0, 80.0, false, Color.GREEN))
+	patterns.append(pattern9)
+	
+	# Pattern 10: Safe Tunnel (Green)
+	var pattern10 = ObstaclePattern.new()
+	pattern10.pattern_name = "Safe Tunnel"
+	pattern10.difficulty = 2
+	pattern10.obstacles.append(ObstaclePattern.ObstacleData.new(100, 0.0, 120.0, false, Color.GREEN))
+	pattern10.obstacles.append(ObstaclePattern.ObstacleData.new(440, 0.0, 120.0, false, Color.GREEN))
+	patterns.append(pattern10)
+
 func get_random_pattern(max_difficulty: int = 3) -> ObstaclePattern:
 	# Filter patterns by difficulty
 	var available = patterns.filter(func(p): return p.difficulty <= max_difficulty)
