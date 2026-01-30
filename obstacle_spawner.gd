@@ -8,6 +8,8 @@ class_name ObstacleSpawner
 @export var initial_difficulty: int = 1
 @export var difficulty_increase_interval: float = 15.0  # Seconds until difficulty increases
 
+@export var min_gap: float = 200.0         # Minimum horizontal gap between patterns
+
 var pattern_manager: PatternManager
 var spawn_timer: Timer
 var difficulty_timer: Timer
@@ -18,12 +20,14 @@ func _ready():
 	pattern_manager = PatternManager.new()
 	add_child(pattern_manager)
 	
-	# Setup spawn timer
+	# Setup spawn timer as a one-shot
 	spawn_timer = Timer.new()
-	spawn_timer.wait_time = spawn_interval
+	spawn_timer.one_shot = true
 	spawn_timer.timeout.connect(_on_spawn_timer_timeout)
 	add_child(spawn_timer)
-	spawn_timer.start()
+	
+	# Start initial spawn
+	_on_spawn_timer_timeout()
 	
 	# Setup difficulty timer
 	difficulty_timer = Timer.new()
@@ -35,30 +39,35 @@ func _ready():
 	current_difficulty = initial_difficulty
 
 func _on_spawn_timer_timeout():
-	# Only spawn if game is playing (check if GameManager exists)
+	var wait_time = spawn_interval # Fallback
+	
+	# Only spawn if game is playing
 	if has_node("../GameManager"):
 		var game_manager = get_node("../GameManager")
 		if game_manager and game_manager.is_playing():
-			spawn_pattern()
-	else:
-		# If no GameManager, always spawn (old behavior)
-		spawn_pattern()
+			var pattern_width = spawn_pattern()
+			# Calculate time for this pattern to clear the spawn point + gap
+			# Use default speed 250 if not found
+			var speed = 250.0
+			wait_time = (pattern_width + min_gap) / speed
+	
+	spawn_timer.start(wait_time)
 
 func _on_difficulty_timer_timeout():
 	if current_difficulty < 3:
 		current_difficulty += 1
 		print("Difficulty increased to: ", current_difficulty)
 
-func spawn_pattern():
+func spawn_pattern() -> float:
 	if obstacle_scene == null:
 		push_error("ObstacleSpawner: obstacle_scene not assigned!")
-		return
+		return 40.0
 	
 	# Get a random pattern based on current difficulty
 	var pattern = pattern_manager.get_random_pattern(current_difficulty)
 	
 	if pattern == null:
-		return
+		return 40.0
 	
 	# Spawn each obstacle in the pattern
 	for obstacle_data in pattern.obstacles:
@@ -123,11 +132,12 @@ func spawn_pattern():
 		
 		# Add to scene
 		get_parent().add_child(obstacle)
+	
+	return pattern.get_width()
 
 func set_spawn_interval(interval: float):
 	spawn_interval = interval
-	if spawn_timer:
-		spawn_timer.wait_time = interval
+	# Note: In the new one-shot system, this only affects the fallback wait_time
 
 func pause_spawning():
 	if spawn_timer:
@@ -135,4 +145,4 @@ func pause_spawning():
 
 func resume_spawning():
 	if spawn_timer:
-		spawn_timer.start()
+		spawn_timer.start(0.1) # Shorter wait to resume immediately

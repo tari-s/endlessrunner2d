@@ -34,3 +34,10 @@ var difficulty: int = 1  # 1=easy, 2=medium, 3=hard
 
 func _init():
 	obstacles = []
+
+func get_width() -> float:
+	var max_x = 40.0 # Minimum width for a single obstacle
+	for obs in obstacles:
+		if obs.x_offset + 40.0 > max_x:
+			max_x = obs.x_offset + 40.0
+	return max_x
