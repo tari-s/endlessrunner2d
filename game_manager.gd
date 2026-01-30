@@ -44,10 +44,8 @@ func start_game():
 	get_tree().paused = false
 	game_started.emit()
 	score = 0.0
-	score_updated.emit(0)
-	print("Game started!")
-
-	score = 0.0
+	current_multiplier = 1.0
+	multiplier_time_left = 0.0
 	score_updated.emit(0)
 	print("Game started!")
 
