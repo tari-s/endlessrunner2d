@@ -32,6 +32,9 @@ func check_bounds():
 	if global_position.x < -50 or global_position.x > 1250:
 		game_over()
 
+const DEATH_EXPLOSION = preload("res://death_explosion.tscn")
+const COLLECTION_SPARK = preload("res://collection_spark.tscn")
+
 func check_collisions():
 	for i in range(get_slide_collision_count()):
 		var collision = get_slide_collision(i)
@@ -42,7 +45,15 @@ func check_collisions():
 			if collider.powerup_type == "multiplier":
 				if has_node("../GameManager"):
 					get_node("../GameManager").activate_multiplier(5.0)
-				# TODO: Play collection sound
+				
+				# Spawn spark at star position
+				var spark = COLLECTION_SPARK.instantiate()
+				spark.global_position = collider.global_position
+				if has_node("../HUD"):
+					get_node("../HUD").add_child(spark)
+				else:
+					get_tree().current_scene.add_child(spark)
+					
 				collider.queue_free()
 			continue # Power-ups don't stop movement or kill
 		
@@ -54,7 +65,6 @@ func check_collisions():
 			# If it doesn't have "deadly" property, assume it's deadly (like floor/ceiling)
 			game_over()
 
-const DEATH_EXPLOSION = preload("res://death_explosion.tscn")
 
 func game_over():
 	# Stop movement
