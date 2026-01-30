@@ -26,3 +26,16 @@ func set_height(new_height: float):
 		if collision.shape is RectangleShape2D:
 			collision.shape.size.y = new_height
 			collision.position.y = 0  # Center it
+			
+	# Update Line2D Border if it exists
+	if has_node("Border"):
+		var border = get_node("Border")
+		var half_h = new_height / 2
+		border.points = PackedVector2Array([
+			Vector2(-20, -half_h),
+			Vector2(20, -half_h),
+			Vector2(20, half_h),
+			Vector2(20, half_h), # Point overlap to close correctly
+			Vector2(-20, half_h),
+			Vector2(-20, -half_h)
+		])

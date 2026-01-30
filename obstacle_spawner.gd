@@ -84,13 +84,34 @@ func spawn_pattern():
 				var collision = obstacle.get_node("CollisionShape2D")
 				if collision.shape is RectangleShape2D:
 					collision.shape.size.y = obstacle_data.height
-					collision.position.y = obstacle_data.height / 2
+					collision.position.y = 0 # Center it precisely
 					
-		# Set Color
+			# Update Line2D Border if present in fallback
+			if obstacle.has_node("Border"):
+				var border = obstacle.get_node("Border")
+				var half_h = obstacle_data.height / 2
+				border.points = PackedVector2Array([
+					Vector2(-20, -half_h),
+					Vector2(20, -half_h),
+					Vector2(20, half_h),
+					Vector2(-20, half_h),
+					Vector2(-20, -half_h)
+				])
+					
+		# Set Color and Borders
 		if obstacle.has_node("ColorRect"):
 			obstacle.get_node("ColorRect").color = obstacle_data.color
 		elif obstacle.has_node("Polygon2D"):
 			obstacle.get_node("Polygon2D").color = obstacle_data.color
+			
+		if obstacle.has_node("Border"):
+			var border_color = ObstaclePattern.COLOR_DEADLY_BORDER
+			if obstacle_data.powerup_type == "multiplier":
+				border_color = ObstaclePattern.COLOR_MULTIPLIER_BORDER
+			elif not obstacle_data.deadly:
+				border_color = ObstaclePattern.COLOR_SAFE_BORDER
+			
+			obstacle.get_node("Border").default_color = border_color
 			
 		# Set Deadly
 		if "deadly" in obstacle:
