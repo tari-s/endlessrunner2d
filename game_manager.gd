@@ -12,6 +12,7 @@ static var is_restarting: bool = false
 
 # Audio
 @export var game_over_sound: AudioStream
+@export var multiplier_sound: AudioStream
 var audio_player: AudioStreamPlayer
 
 # Signals for UI to listen to
@@ -110,6 +111,11 @@ func activate_multiplier(duration: float = 5.0):
 	current_multiplier = 2.0
 	multiplier_time_left = duration
 	multiplier_status_changed.emit(true)
+	
+	if multiplier_sound:
+		audio_player.stream = multiplier_sound
+		audio_player.play()
+		
 	print("Multiplier activated: 2x for ", duration, "s")
 
 # High Score Persistence
