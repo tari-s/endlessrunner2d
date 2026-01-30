@@ -25,6 +25,7 @@ func _ready():
 		mgr.score_updated.connect(_on_score_updated)
 		mgr.game_started.connect(_on_game_started)
 		mgr.game_over.connect(_on_game_over)
+		mgr.multiplier_status_changed.connect(_on_multiplier_status_changed)
 		
 		if mgr.is_playing():
 			_on_game_started()
@@ -40,3 +41,8 @@ func _on_game_over():
 func _on_score_updated(new_score: int):
 	if has_node("HUD/ScoreLabel"):
 		$HUD/ScoreLabel.text = "Score: " + str(new_score)
+
+func _on_multiplier_status_changed(active: bool):
+	if has_node("HUD/ScoreLabel"):
+		var color = Color(0.9, 0.8, 0.2) if active else Color(1, 1, 1)
+		$HUD/ScoreLabel.add_theme_color_override("font_color", color)

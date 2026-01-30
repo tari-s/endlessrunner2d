@@ -32,11 +32,21 @@ func check_collisions():
 		var collision = get_slide_collision(i)
 		var collider = collision.get_collider()
 		
+		# Check for power-ups
+		if "is_powerup" in collider and collider.is_powerup:
+			if collider.powerup_type == "multiplier":
+				if has_node("../GameManager"):
+					get_node("../GameManager").activate_multiplier(5.0)
+				# TODO: Play collection sound
+				collider.queue_free()
+			continue # Power-ups don't stop movement or kill
+		
 		# Check if the collider is deadly
 		if "deadly" in collider:
 			if collider.deadly:
 				game_over()
 		else:
+			# If it doesn't have "deadly" property, assume it's deadly (like floor/ceiling)
 			game_over()
 
 const DEATH_EXPLOSION = preload("res://death_explosion.tscn")

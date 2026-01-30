@@ -2,6 +2,7 @@ extends Node2D
 class_name ObstacleSpawner
 
 @export var obstacle_scene: PackedScene  # Assign obstacle.tscn in editor
+@export var multiplier_scene: PackedScene # Assign multiplier.tscn
 @export var spawn_interval: float = 2.5  # Time between patterns
 @export var spawn_x_position: float = 1300  # Where to spawn (off-screen right)
 @export var initial_difficulty: int = 1
@@ -61,7 +62,11 @@ func spawn_pattern():
 	
 	# Spawn each obstacle in the pattern
 	for obstacle_data in pattern.obstacles:
-		var obstacle = obstacle_scene.instantiate()
+		var scene_to_spawn = obstacle_scene
+		if obstacle_data.powerup_type == "multiplier" and multiplier_scene != null:
+			scene_to_spawn = multiplier_scene
+			
+		var obstacle = scene_to_spawn.instantiate()
 		
 		# Position the obstacle
 		obstacle.position.x = spawn_x_position + obstacle_data.x_offset

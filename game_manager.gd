@@ -18,10 +18,17 @@ var audio_player: AudioStreamPlayer
 signal game_started
 signal game_over
 signal game_restarted
+signal multiplier_status_changed(active: bool)
+
+# Multiplier System
+var current_multiplier: float = 1.0
+var multiplier_time_left: float = 0.0
 
 func _ready():
 	process_mode = Node.PROCESS_MODE_ALWAYS  # Always process, even when paused
 	load_high_score()
+	current_multiplier = 1.0
+	multiplier_time_left = 0.0
 	
 	# Setup Audio Player
 	audio_player = AudioStreamPlayer.new()
@@ -64,6 +71,8 @@ func restart_game():
 	is_restarting = true
 	current_state = GameState.PLAYING
 	score = 0.0
+	current_multiplier = 1.0
+	multiplier_time_left = 0.0
 	score_updated.emit(0)
 	game_restarted.emit()
 	get_tree().paused = false
@@ -85,8 +94,23 @@ signal score_updated(new_score: int)
 
 func _process(delta: float):
 	if current_state == GameState.PLAYING:
-		score += score_speed * delta
+		# Handle Multiplier Timer
+		if multiplier_time_left > 0:
+			multiplier_time_left -= delta
+			if multiplier_time_left <= 0:
+				current_multiplier = 1.0
+				multiplier_status_changed.emit(false)
+				print("Multiplier expired")
+		
+		# Update Score
+		score += score_speed * delta * current_multiplier
 		score_updated.emit(int(score))
+
+func activate_multiplier(duration: float = 5.0):
+	current_multiplier = 2.0
+	multiplier_time_left = duration
+	multiplier_status_changed.emit(true)
+	print("Multiplier activated: 2x for ", duration, "s")
 
 # High Score Persistence
 var high_score: int = 0

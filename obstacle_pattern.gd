@@ -8,13 +8,15 @@ class ObstacleData:
 	var height: float      # Obstacle height
 	var deadly: bool       # Is it deadly?
 	var color: Color       # Visual color
+	var powerup_type: String = "" # Type of powerup if non-deadly
 	
-	func _init(y: float, x: float = 0.0, h: float = 80.0, is_deadly: bool = true, col: Color = Color(1, 0.3, 0.3)):
+	func _init(y: float, x: float = 0.0, h: float = 80.0, is_deadly: bool = true, col: Color = Color(1, 0.3, 0.3), p_type: String = ""):
 		y_position = y
 		x_offset = x
 		height = h
 		deadly = is_deadly
 		color = col
+		powerup_type = p_type
 
 # Array of obstacles in this pattern
 var obstacles: Array[ObstacleData] = []

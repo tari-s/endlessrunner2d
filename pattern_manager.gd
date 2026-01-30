@@ -89,6 +89,22 @@ func _create_patterns():
 	pattern10.obstacles.append(ObstaclePattern.ObstacleData.new(440, 0.0, 120.0, false, Color(0.3, 1, 0.3)))
 	patterns.append(pattern10)
 
+	# Pattern 11: Multiplier Intro (Difficulty 3)
+	var pattern11 = ObstaclePattern.new()
+	pattern11.pattern_name = "Multiplier Intro"
+	pattern11.difficulty = 3
+	pattern11.obstacles.append(ObstaclePattern.ObstacleData.new(300, 0.0, 40.0, false, Color(0.9, 0.8, 0.2), "multiplier"))
+	patterns.append(pattern11)
+	
+	# Pattern 12: Multiplier Challenge (Difficulty 3)
+	var pattern12 = ObstaclePattern.new()
+	pattern12.pattern_name = "Multiplier Challenge"
+	pattern12.difficulty = 3
+	pattern12.obstacles.append(ObstaclePattern.ObstacleData.new(150, 0.0, 80.0, true))
+	pattern12.obstacles.append(ObstaclePattern.ObstacleData.new(450, 0.0, 80.0, true))
+	pattern12.obstacles.append(ObstaclePattern.ObstacleData.new(300, 150.0, 40.0, false, Color(0.9, 0.8, 0.2), "multiplier"))
+	patterns.append(pattern12)
+
 func get_random_pattern(max_difficulty: int = 3) -> ObstaclePattern:
 	# Filter patterns by difficulty
 	var available = patterns.filter(func(p): return p.difficulty <= max_difficulty)
