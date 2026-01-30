@@ -45,11 +45,17 @@ position = Vector2(600, 300)
 position = Vector2(600, 300)
 script = ExtResource("1_feb5d")
 
-[node name="ColorRect" type="ColorRect" parent="Player"]
-custom_minimum_size = Vector2(40, 40)
-offset_right = 40.0
-offset_bottom = 40.0
+[node name="ShipVisual" type="Polygon2D" parent="Player"]
 color = Color(0.6, 0.6, 1, 1)
+polygon = PackedVector2Array(40, 20, 0, 5, 12, 20, 0, 35)
+
+[node name="ShipOutline" type="Line2D" parent="Player"]
+points = PackedVector2Array(40, 20, 0, 5, 12, 20, 0, 35, 40, 20)
+width = 2.0
+default_color = Color(1, 1, 1, 1)
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
 position = Vector2(20, 20)
