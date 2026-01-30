@@ -30,6 +30,9 @@ func _ready():
 		# Ensure HUD is always visible for effects, we only hide individual elements
 		if has_node("HUD"): $HUD.show()
 		
+		# Hide individual elements initially
+		if has_node("HUD/ScoreLabel"): $HUD/ScoreLabel.hide()
+		
 		if mgr.is_playing():
 			_on_game_started()
 
@@ -44,8 +47,7 @@ func _on_game_over():
 	if has_node("HUD/ScoreLabel"):
 		$HUD/ScoreLabel.hide()
 	if has_node("GameOverScreen"):
-		# The instruction snippet was incomplete here, assuming it's just adding the check.
-		pass # Placeholder for potential future code
+		$GameOverScreen.show()
 
 func _on_score_updated(new_score: int):
 	if has_node("HUD/ScoreLabel"):
