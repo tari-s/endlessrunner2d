@@ -5,9 +5,6 @@ const WORLD_HEIGHT := 600
 
 @onready var spawner = $ObstacleSpawner
 
-func _ready():
-	pass  # Spawner will handle itself
-
 # Optional: Control spawning based on game state
 func pause_game():
 	if spawner:
@@ -16,3 +13,12 @@ func pause_game():
 func resume_game():
 	if spawner:
 		spawner.resume_spawning()
+
+func _ready():
+	# Connect to GameManager score signal
+	if has_node("GameManager"):
+		$GameManager.score_updated.connect(_on_score_updated)
+
+func _on_score_updated(new_score: int):
+	if has_node("HUD/ScoreLabel"):
+		$HUD/ScoreLabel.text = "Score: " + str(new_score)

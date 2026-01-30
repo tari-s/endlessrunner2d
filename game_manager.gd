@@ -34,6 +34,8 @@ func start_game():
 	current_state = GameState.PLAYING
 	get_tree().paused = false
 	game_started.emit()
+	score = 0.0
+	score_updated.emit(0)
 	print("Game started!")
 
 func end_game():
@@ -50,6 +52,8 @@ func end_game():
 func restart_game():
 	is_restarting = true
 	current_state = GameState.PLAYING
+	score = 0.0
+	score_updated.emit(0)
 	game_restarted.emit()
 	get_tree().paused = false
 	get_tree().reload_current_scene()
@@ -62,3 +66,13 @@ func show_menu():
 
 func is_playing() -> bool:
 	return current_state == GameState.PLAYING
+
+# Score System
+var score: float = 0.0
+@export var score_speed: float = 10.0  # Points per second
+signal score_updated(new_score: int)
+
+func _process(delta: float):
+	if current_state == GameState.PLAYING:
+		score += score_speed * delta
+		score_updated.emit(int(score))
