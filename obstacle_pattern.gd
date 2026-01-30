@@ -1,5 +1,9 @@
-extends Resource
 class_name ObstaclePattern
+
+# Color Constants
+const COLOR_DEADLY = Color(1.0, 0.3, 0.3)      # Red
+const COLOR_SAFE = Color(0.2, 0.2, 0.2)        # Dark Grey (Environment)
+const COLOR_MULTIPLIER = Color(0.9, 0.8, 0.2)  # Gold
 
 # Defines a single obstacle in the pattern
 class ObstacleData:
@@ -10,7 +14,7 @@ class ObstacleData:
 	var color: Color       # Visual color
 	var powerup_type: String = "" # Type of powerup if non-deadly
 	
-	func _init(y: float, x: float = 0.0, h: float = 80.0, is_deadly: bool = true, col: Color = Color(1, 0.3, 0.3), p_type: String = ""):
+	func _init(y: float, x: float = 0.0, h: float = 80.0, is_deadly: bool = true, col: Color = COLOR_DEADLY, p_type: String = ""):
 		y_position = y
 		x_offset = x
 		height = h

@@ -44,5 +44,5 @@ func _on_score_updated(new_score: int):
 
 func _on_multiplier_status_changed(active: bool):
 	if has_node("HUD/ScoreLabel"):
-		var color = Color(0.9, 0.8, 0.2) if active else Color(1, 1, 1)
+		var color = ObstaclePattern.COLOR_MULTIPLIER if active else Color(1, 1, 1)
 		$HUD/ScoreLabel.add_theme_color_override("font_color", color)
