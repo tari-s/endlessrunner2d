@@ -9,6 +9,11 @@ func _physics_process(delta):
 		if game_manager and not game_manager.is_playing():
 			return
 	
+	# Reset visuals if they were hidden in game_over
+	if has_node("ShipVisual"): $ShipVisual.show()
+	if has_node("ShipOutline"): $ShipOutline.show()
+	set_physics_process(true)
+	
 	velocity.x = 0
 	velocity.y = 0
 
@@ -52,12 +57,25 @@ func check_collisions():
 const DEATH_EXPLOSION = preload("res://death_explosion.tscn")
 
 func game_over():
-	# Spawn explosion
+	# Stop movement
+	velocity = Vector2.ZERO
+	set_physics_process(false)
+	
+	# Hide ship
+	if has_node("ShipVisual"): $ShipVisual.hide()
+	if has_node("ShipOutline"): $ShipOutline.hide()
+	
+	# Spawn explosion on HUD (top-most layer)
 	var explosion = DEATH_EXPLOSION.instantiate()
-	explosion.global_position = global_position + Vector2(20, 20)
-	# Add to main scene (Game) so it's not removed if player is removed, 
-	# and to ensure it displays on top.
-	get_tree().current_scene.add_child(explosion)
+	
+	if has_node("../HUD"):
+		# In a CanvasLayer, we need screen coordinates
+		var screen_pos = get_global_transform_with_canvas().origin
+		explosion.position = screen_pos + Vector2(20, 20)
+		get_node("../HUD").add_child(explosion)
+	else:
+		explosion.global_position = global_position + Vector2(20, 20)
+		get_tree().current_scene.add_child(explosion)
 
 	# If GameManager exists, use it; otherwise reload scene directly
 	if has_node("../GameManager"):

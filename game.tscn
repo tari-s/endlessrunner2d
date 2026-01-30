@@ -99,6 +99,7 @@ difficulty_increase_interval = 5.0
 [node name="GameOverScreen" parent="." instance=ExtResource("9_gameover")]
 
 [node name="HUD" type="CanvasLayer" parent="."]
+layer = 100
 
 [node name="ScoreLabel" type="Label" parent="HUD"]
 anchors_preset = 1

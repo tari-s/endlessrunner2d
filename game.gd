@@ -27,16 +27,25 @@ func _ready():
 		mgr.game_over.connect(_on_game_over)
 		mgr.multiplier_status_changed.connect(_on_multiplier_status_changed)
 		
+		# Ensure HUD is always visible for effects, we only hide individual elements
+		if has_node("HUD"): $HUD.show()
+		
 		if mgr.is_playing():
 			_on_game_started()
 
 func _on_game_started():
-	if has_node("HUD"):
-		$HUD.show()
+	if has_node("HUD/ScoreLabel"):
+		$HUD/ScoreLabel.show()
+		$HUD/ScoreLabel.add_theme_color_override("font_color", Color(1, 1, 1))
+	if has_node("StartScreen"):
+		$StartScreen.hide()
 
 func _on_game_over():
-	if has_node("HUD"):
-		$HUD.hide()
+	if has_node("HUD/ScoreLabel"):
+		$HUD/ScoreLabel.hide()
+	if has_node("GameOverScreen"):
+		# The instruction snippet was incomplete here, assuming it's just adding the check.
+		pass # Placeholder for potential future code
 
 func _on_score_updated(new_score: int):
 	if has_node("HUD/ScoreLabel"):
