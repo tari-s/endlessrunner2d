@@ -89,6 +89,8 @@ func spawn_pattern():
 		# Set Color
 		if obstacle.has_node("ColorRect"):
 			obstacle.get_node("ColorRect").color = obstacle_data.color
+		elif obstacle.has_node("Polygon2D"):
+			obstacle.get_node("Polygon2D").color = obstacle_data.color
 			
 		# Set Deadly
 		if "deadly" in obstacle:
