@@ -21,6 +21,7 @@ signal game_restarted
 
 func _ready():
 	process_mode = Node.PROCESS_MODE_ALWAYS  # Always process, even when paused
+	load_high_score()
 	
 	# Setup Audio Player
 	audio_player = AudioStreamPlayer.new()
@@ -38,9 +39,19 @@ func start_game():
 	score_updated.emit(0)
 	print("Game started!")
 
+	score = 0.0
+	score_updated.emit(0)
+	print("Game started!")
+
 func end_game():
 	current_state = GameState.GAME_OVER
 	get_tree().paused = true
+	
+	# Update High Score
+	var final_score = int(score)
+	if final_score > high_score:
+		high_score = final_score
+		save_high_score()
 	
 	if game_over_sound:
 		audio_player.stream = game_over_sound
@@ -76,3 +87,18 @@ func _process(delta: float):
 	if current_state == GameState.PLAYING:
 		score += score_speed * delta
 		score_updated.emit(int(score))
+
+# High Score Persistence
+var high_score: int = 0
+const SAVE_PATH = "user://high_score.save"
+
+func save_high_score():
+	var config = ConfigFile.new()
+	config.set_value("Game", "high_score", high_score)
+	config.save(SAVE_PATH)
+
+func load_high_score():
+	var config = ConfigFile.new()
+	var err = config.load(SAVE_PATH)
+	if err == OK:
+		high_score = config.get_value("Game", "high_score", 0)

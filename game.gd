@@ -15,9 +15,27 @@ func resume_game():
 		spawner.resume_spawning()
 
 func _ready():
-	# Connect to GameManager score signal
+	# Initially hide HUD
+	if has_node("HUD"):
+		$HUD.hide()
+		
+	# Connect to GameManager signals
 	if has_node("GameManager"):
-		$GameManager.score_updated.connect(_on_score_updated)
+		var mgr = $GameManager
+		mgr.score_updated.connect(_on_score_updated)
+		mgr.game_started.connect(_on_game_started)
+		mgr.game_over.connect(_on_game_over)
+		
+		if mgr.is_playing():
+			_on_game_started()
+
+func _on_game_started():
+	if has_node("HUD"):
+		$HUD.show()
+
+func _on_game_over():
+	if has_node("HUD"):
+		$HUD.hide()
 
 func _on_score_updated(new_score: int):
 	if has_node("HUD/ScoreLabel"):
