@@ -1,4 +1,4 @@
-extends "res://obstacle.gd"
+extends "res://entities/obstacles/obstacle.gd"
 
 func _ready():
 	moving = false

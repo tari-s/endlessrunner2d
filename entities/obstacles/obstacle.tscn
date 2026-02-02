@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://bm6otxrfdubws"]
 
-[ext_resource type="Script" path="res://obstacle.gd" id="1_sl1jc"]
+[ext_resource type="Script" path="res://entities/obstacles/obstacle.gd" id="1_sl1jc"]
 
 [node name="Obstacle" type="StaticBody2D"]
 script = ExtResource("1_sl1jc")

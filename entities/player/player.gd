@@ -46,8 +46,8 @@ func check_bounds():
 	if global_position.x < -50 or global_position.x > 1250:
 		game_over()
 
-const DEATH_EXPLOSION = preload("res://death_explosion.tscn")
-const COLLECTION_SPARK = preload("res://collection_spark.tscn")
+const DEATH_EXPLOSION = preload("res://vfx/death_explosion.tscn")
+const COLLECTION_SPARK = preload("res://vfx/collection_spark.tscn")
 
 func check_collisions():
 	for i in range(get_slide_collision_count()):
