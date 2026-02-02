@@ -2,6 +2,19 @@ extends CharacterBody2D
 
 @export var move_speed := 350
 
+const COLOR_NORMAL = Color(0.6, 0.7, 1.0)
+const COLOR_GOLD = Color(0.9, 0.8, 0.2)
+const COLOR_PURPLE = Color(0.7, 0.2, 0.9)
+
+func _ready():
+	if has_node("../GameManager"):
+		var gm = get_node("../GameManager")
+		gm.multiplier_status_changed.connect(_on_multiplier_changed)
+		gm.game_started.connect(_on_game_started)
+	
+	if has_node("TrailParticles"):
+		$TrailParticles.emitting = true
+
 func _physics_process(delta):
 	# Only move if game is playing (if GameManager exists)
 	if has_node("../GameManager"):
@@ -12,6 +25,7 @@ func _physics_process(delta):
 	# Reset visuals if they were hidden in game_over
 	if has_node("ShipVisual"): $ShipVisual.show()
 	if has_node("ShipOutline"): $ShipOutline.show()
+	if has_node("TrailParticles"): $TrailParticles.emitting = true
 	set_physics_process(true)
 	
 	velocity.x = 0
@@ -42,13 +56,28 @@ func check_collisions():
 		
 		# Check for power-ups
 		if "is_powerup" in collider and collider.is_powerup:
-			if collider.powerup_type == "multiplier":
+			if collider.powerup_type.begins_with("multiplier"):
+				var mult_value = 2.0
+				if collider.powerup_type == "multiplier_5x":
+					mult_value = 5.0
+				
 				if has_node("../GameManager"):
-					get_node("../GameManager").activate_multiplier(5.0)
+					get_node("../GameManager").activate_multiplier(5.0, mult_value)
+				
+				print("Collected Multiplier: ", mult_value, "x (Type: ", collider.powerup_type, ")")
 				
 				# Spawn spark at star position
 				var spark = COLLECTION_SPARK.instantiate()
 				spark.global_position = collider.global_position
+				
+				# Customize spark color
+				var spark_color = COLOR_GOLD
+				if mult_value >= 4.9:
+					spark_color = COLOR_PURPLE
+				
+				if spark.has_method("set_color"):
+					spark.set_color(spark_color)
+				
 				if has_node("../HUD"):
 					get_node("../HUD").add_child(spark)
 				else:
@@ -74,6 +103,7 @@ func game_over():
 	# Hide ship
 	if has_node("ShipVisual"): $ShipVisual.hide()
 	if has_node("ShipOutline"): $ShipOutline.hide()
+	if has_node("TrailParticles"): $TrailParticles.emitting = false
 	
 	# Spawn explosion on HUD (top-most layer)
 	var explosion = DEATH_EXPLOSION.instantiate()
@@ -87,7 +117,6 @@ func game_over():
 		explosion.global_position = global_position + Vector2(20, 20)
 		get_tree().current_scene.add_child(explosion)
 
-	# If GameManager exists, use it; otherwise reload scene directly
 	if has_node("../GameManager"):
 		var game_manager = get_node("../GameManager")
 		if game_manager:
@@ -95,3 +124,24 @@ func game_over():
 	else:
 		# Fallback: reload scene directly (old behavior)
 		get_tree().reload_current_scene()
+
+func _on_game_started():
+	if has_node("TrailParticles"):
+		$TrailParticles.emitting = true
+		_on_multiplier_changed(false, 1.0) # Reset color
+
+func _on_multiplier_changed(active: bool, value: float):
+	if not has_node("TrailParticles"): return
+	
+	var target_color = COLOR_NORMAL
+	if active:
+		if value >= 4.9:
+			target_color = COLOR_PURPLE
+		elif value >= 1.9:
+			target_color = COLOR_GOLD
+	
+	# Update color ramp to fade from target color to transparent
+	var gradient = $TrailParticles.color_ramp
+	if gradient:
+		gradient.set_color(0, target_color)
+		gradient.set_color(1, Color(target_color.r, target_color.g, target_color.b, 0))

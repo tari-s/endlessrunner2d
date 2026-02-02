@@ -19,7 +19,7 @@ var audio_player: AudioStreamPlayer
 signal game_started
 signal game_over
 signal game_restarted
-signal multiplier_status_changed(active: bool)
+signal multiplier_status_changed(active: bool, value: float)
 
 # Multiplier System
 var current_multiplier: float = 1.0
@@ -98,23 +98,23 @@ func _process(delta: float):
 			multiplier_time_left -= delta
 			if multiplier_time_left <= 0:
 				current_multiplier = 1.0
-				multiplier_status_changed.emit(false)
+				multiplier_status_changed.emit(false, 1.0)
 				print("Multiplier expired")
 		
 		# Update Score
 		score += score_speed * delta * current_multiplier
 		score_updated.emit(int(score))
 
-func activate_multiplier(duration: float = 5.0):
-	current_multiplier = 2.0
+func activate_multiplier(duration: float = 5.0, value: float = 2.0):
+	current_multiplier = value
 	multiplier_time_left = duration
-	multiplier_status_changed.emit(true)
+	multiplier_status_changed.emit(true, value)
 	
 	if multiplier_sound:
 		audio_player.stream = multiplier_sound
 		audio_player.play()
 		
-	print("Multiplier activated: 2x for ", duration, "s")
+	print("Multiplier activated: ", value, "x for ", duration, "s")
 
 # High Score Persistence
 var high_score: int = 0

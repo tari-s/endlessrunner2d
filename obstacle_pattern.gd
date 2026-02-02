@@ -4,10 +4,12 @@ class_name ObstaclePattern
 const COLOR_DEADLY = Color(1.0, 0.3, 0.3)      # Red
 const COLOR_SAFE = Color(0.2, 0.2, 0.2)        # Dark Grey (Environment)
 const COLOR_MULTIPLIER = Color(0.9, 0.8, 0.2)  # Gold
+const COLOR_SUPER_MULTIPLIER = Color(0.7, 0.2, 0.9) # Purple
 
 const COLOR_DEADLY_BORDER = Color(0.5, 0.1, 0.1)
 const COLOR_SAFE_BORDER = Color(0.05, 0.05, 0.05)
 const COLOR_MULTIPLIER_BORDER = Color(0.5, 0.4, 0.1)
+const COLOR_SUPER_MULTIPLIER_BORDER = Color(0.35, 0.1, 0.45)
 const COLOR_PLAYER_BORDER = Color(0.2, 0.2, 0.5)
 
 enum SHAPE {

@@ -72,7 +72,7 @@ func spawn_pattern() -> float:
 	# Spawn each obstacle in the pattern
 	for obstacle_data in pattern.obstacles:
 		var scene_to_spawn = obstacle_scene
-		if obstacle_data.powerup_type == "multiplier" and multiplier_scene != null:
+		if obstacle_data.powerup_type.begins_with("multiplier") and multiplier_scene != null:
 			scene_to_spawn = multiplier_scene
 			
 		var obstacle = scene_to_spawn.instantiate()
@@ -118,7 +118,9 @@ func spawn_pattern() -> float:
 			
 		if obstacle.has_node("Border"):
 			var border_color = ObstaclePattern.COLOR_DEADLY_BORDER
-			if obstacle_data.powerup_type == "multiplier":
+			if obstacle_data.powerup_type == "multiplier_5x":
+				border_color = ObstaclePattern.COLOR_SUPER_MULTIPLIER_BORDER
+			elif obstacle_data.powerup_type.begins_with("multiplier"):
 				border_color = ObstaclePattern.COLOR_MULTIPLIER_BORDER
 			elif not obstacle_data.deadly:
 				border_color = ObstaclePattern.COLOR_SAFE_BORDER
@@ -128,6 +130,10 @@ func spawn_pattern() -> float:
 		# Set Deadly
 		if "deadly" in obstacle:
 			obstacle.deadly = obstacle_data.deadly
+		
+		# Set Powerup Type
+		if "powerup_type" in obstacle:
+			obstacle.powerup_type = obstacle_data.powerup_type
 		
 		# Enable movement (check if property exists)
 		if "moving" in obstacle:

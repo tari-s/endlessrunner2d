@@ -53,7 +53,16 @@ func _on_score_updated(new_score: int):
 	if has_node("HUD/ScoreLabel"):
 		$HUD/ScoreLabel.text = "Score: " + str(new_score)
 
-func _on_multiplier_status_changed(active: bool):
+func _on_multiplier_status_changed(active: bool, value: float):
 	if has_node("HUD/ScoreLabel"):
-		var color = ObstaclePattern.COLOR_MULTIPLIER if active else Color(1, 1, 1)
-		$HUD/ScoreLabel.add_theme_color_override("font_color", color)
+		var label = get_node("HUD/ScoreLabel")
+		var target_color = Color(1, 1, 1) # White (Normal)
+		
+		if active:
+			if value >= 4.9: # Buffer for float precision
+				target_color = ObstaclePattern.COLOR_SUPER_MULTIPLIER
+			elif value >= 1.9:
+				target_color = ObstaclePattern.COLOR_MULTIPLIER
+		
+		label.add_theme_color_override("font_color", target_color)
+		print("Score Label Color Updated: ", target_color, " for multiplier ", value)

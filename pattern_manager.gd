@@ -126,6 +126,13 @@ func _create_patterns():
 	_add_obs(pattern12, 300, 150.0, 40.0, false, ObstaclePattern.COLOR_MULTIPLIER, "multiplier")
 	patterns.append(pattern12)
 
+	# Pattern 13: Super Multiplier (Difficulty 3)
+	var pattern13 = ObstaclePattern.new()
+	pattern13.pattern_name = "Super Multiplier"
+	pattern13.difficulty = 3
+	_add_obs(pattern13, 300, 0.0, 40.0, false, ObstaclePattern.COLOR_SUPER_MULTIPLIER, "multiplier_5x")
+	patterns.append(pattern13)
+
 func get_random_pattern(max_difficulty: int = 3) -> ObstaclePattern:
 	# Filter patterns by difficulty
 	var available = patterns.filter(func(p): return p.difficulty <= max_difficulty)
