@@ -12,6 +12,7 @@
 [ext_resource type="AudioStream" uid="uid://beaalq00t7nwf" path="res://power-up.mp3" id="8_mult_sound"]
 [ext_resource type="PackedScene" uid="uid://dqw8x7y605t4u" path="res://start_screen.tscn" id="8_start"]
 [ext_resource type="PackedScene" uid="uid://dav8w7x6y504t" path="res://game_over_screen.tscn" id="9_gameover"]
+[ext_resource type="AudioStream" uid="uid://c613350k81se1" path="res://jet-engine.mp3" id="10_jet"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_y32ns"]
 size = Vector2(40, 40)
@@ -45,6 +46,7 @@ color = Color(0.9, 0.9, 0.9, 1)
 script = ExtResource("7_manager")
 game_over_sound = ExtResource("3_hve3p")
 multiplier_sound = ExtResource("8_mult_sound")
+jet_engine_sound = ExtResource("10_jet")
 
 [node name="Camera" type="Camera2D" parent="."]
 position = Vector2(600, 300)

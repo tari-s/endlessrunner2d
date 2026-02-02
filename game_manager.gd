@@ -13,7 +13,9 @@ static var is_restarting: bool = false
 # Audio
 @export var game_over_sound: AudioStream
 @export var multiplier_sound: AudioStream
+@export var jet_engine_sound: AudioStream
 var audio_player: AudioStreamPlayer
+var engine_player: AudioStreamPlayer
 
 # Signals for UI to listen to
 signal game_started
@@ -35,6 +37,14 @@ func _ready():
 	audio_player = AudioStreamPlayer.new()
 	add_child(audio_player)
 	
+	# Setup Jet Engine Player
+	engine_player = AudioStreamPlayer.new()
+	add_child(engine_player)
+	if jet_engine_sound:
+		engine_player.stream = jet_engine_sound
+		if engine_player.stream is AudioStreamMP3:
+			engine_player.stream.loop = true
+	
 	if is_restarting:
 		start_game()
 		is_restarting = false
@@ -48,6 +58,10 @@ func start_game():
 	multiplier_time_left = 0.0
 	score_updated.emit(0)
 	print("Game started!")
+	
+	if engine_player and jet_engine_sound:
+		if not engine_player.playing:
+			engine_player.play()
 
 func end_game():
 	current_state = GameState.GAME_OVER
@@ -65,6 +79,9 @@ func end_game():
 		
 	game_over.emit()
 	print("Game over!")
+	
+	if engine_player:
+		engine_player.stop()
 
 func restart_game():
 	is_restarting = true
