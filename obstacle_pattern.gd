@@ -10,6 +10,19 @@ const COLOR_SAFE_BORDER = Color(0.05, 0.05, 0.05)
 const COLOR_MULTIPLIER_BORDER = Color(0.5, 0.4, 0.1)
 const COLOR_PLAYER_BORDER = Color(0.2, 0.2, 0.5)
 
+enum SHAPE {
+	RECTANGLE,
+	TRIANGLE_UP,
+	TRIANGLE_DOWN,
+	TRIANGLE_LEFT,
+	TRIANGLE_RIGHT,
+	PENTAGON,
+	HEXAGON,
+	TRAPEZOID_A, # Wide bottom
+	TRAPEZOID_B, # Wide top
+	IRREGULAR
+}
+
 # Defines a single obstacle in the pattern
 class ObstacleData:
 	var y_position: float  # Vertical position (0-600)
@@ -18,14 +31,16 @@ class ObstacleData:
 	var deadly: bool       # Is it deadly?
 	var color: Color       # Visual color
 	var powerup_type: String = "" # Type of powerup if non-deadly
+	var shape: SHAPE = SHAPE.RECTANGLE
 	
-	func _init(y: float, x: float = 0.0, h: float = 80.0, is_deadly: bool = true, col: Color = COLOR_DEADLY, p_type: String = ""):
+	func _init(y: float, x: float = 0.0, h: float = 80.0, is_deadly: bool = true, col: Color = COLOR_DEADLY, p_type: String = "", s: SHAPE = SHAPE.RECTANGLE):
 		y_position = y
 		x_offset = x
 		height = h
 		deadly = is_deadly
 		color = col
 		powerup_type = p_type
+		shape = s
 
 # Array of obstacles in this pattern
 var obstacles: Array[ObstacleData] = []

@@ -82,6 +82,9 @@ func spawn_pattern() -> float:
 		obstacle.position.y = obstacle_data.y_position
 		
 		# Set obstacle properties if it has them
+		if obstacle.has_method("set_shape"):
+			obstacle.set_shape(obstacle_data.shape)
+			
 		if obstacle.has_method("set_height"):
 			obstacle.set_height(obstacle_data.height)
 		elif obstacle.has_node("ColorRect"):
