@@ -3,12 +3,12 @@ class_name ObstacleSpawner
 
 @export var obstacle_scene: PackedScene  # Assign obstacle.tscn in editor
 @export var multiplier_scene: PackedScene # Assign multiplier.tscn
-@export var spawn_interval: float = 2.5  # Time between patterns
+@export var spawn_interval: float = 1.5  # Time between patterns
 @export var spawn_x_position: float = 1300  # Where to spawn (off-screen right)
 @export var initial_difficulty: int = 1
-@export var difficulty_increase_interval: float = 15.0  # Seconds until difficulty increases
+@export var difficulty_increase_interval: float = 10.0  # Seconds until difficulty increases
 
-@export var min_gap: float = 200.0         # Minimum horizontal gap between patterns
+@export var min_gap: float = 100.0         # Minimum horizontal gap between patterns
 
 var pattern_manager: PatternManager
 var spawn_timer: Timer
