@@ -27,6 +27,17 @@ signal multiplier_status_changed(active: bool, value: float)
 var current_multiplier: float = 1.0
 var multiplier_time_left: float = 0.0
 
+# Difficulty System
+@export var base_speed: float = 300.0
+@export var max_speed: float = 850.0
+@export var difficulty_ramp_seconds: float = 30.0
+
+var difficulty_factor: float = 0.0 # 0.0 (start) to 1.0 (max)
+var elapsed_play_time: float = 0.0
+
+func get_current_speed() -> float:
+	return lerp(base_speed, max_speed, difficulty_factor)
+
 func _ready():
 	process_mode = Node.PROCESS_MODE_ALWAYS  # Always process, even when paused
 	load_high_score()
@@ -56,6 +67,8 @@ func start_game():
 	score = 0.0
 	current_multiplier = 1.0
 	multiplier_time_left = 0.0
+	difficulty_factor = 0.0
+	elapsed_play_time = 0.0
 	score_updated.emit(0)
 	print("Game started!")
 	
@@ -89,6 +102,8 @@ func restart_game():
 	score = 0.0
 	current_multiplier = 1.0
 	multiplier_time_left = 0.0
+	difficulty_factor = 0.0
+	elapsed_play_time = 0.0
 	score_updated.emit(0)
 	game_restarted.emit()
 	get_tree().paused = false
@@ -110,6 +125,10 @@ signal score_updated(new_score: int)
 
 func _process(delta: float):
 	if current_state == GameState.PLAYING:
+		# Update Difficulty
+		elapsed_play_time += delta
+		difficulty_factor = clamp(elapsed_play_time / difficulty_ramp_seconds, 0.0, 1.0)
+		
 		# Handle Multiplier Timer
 		if multiplier_time_left > 0:
 			multiplier_time_left -= delta

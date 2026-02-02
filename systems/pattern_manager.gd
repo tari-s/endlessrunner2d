@@ -133,12 +133,41 @@ func _create_patterns():
 	_add_obs(pattern13, 300, 0.0, 40.0, false, ObstaclePattern.COLOR_SUPER_MULTIPLIER, "multiplier_5x")
 	patterns.append(pattern13)
 
-func get_random_pattern(max_difficulty: int = 3) -> ObstaclePattern:
+func get_random_pattern(max_difficulty: int = 3, powerup_bias: float = 0.0) -> ObstaclePattern:
 	# Filter patterns by difficulty
 	var available = patterns.filter(func(p): return p.difficulty <= max_difficulty)
 	
 	if available.is_empty():
-		return patterns[0]  # Fallback to first pattern
+		return patterns[0]
+	
+	# Calculate weights
+	var weights = []
+	var total_weight = 0.0
+	
+	for pattern in available:
+		var weight = 1.0
+		# Increase weight if it's a power-up pattern and bias is high
+		var has_powerup = false
+		for obs in pattern.obstacles:
+			if obs.powerup_type != "":
+				has_powerup = true
+				break
+		
+		if has_powerup:
+			# Power-ups become much more likely as bias increases (0.0 to 1.0)
+			# At bias=1.0, power-ups are 5x more likely
+			weight += powerup_bias * 4.0
+		
+		weights.append(weight)
+		total_weight += weight
+	
+	# Random selection based on weights
+	var roll = randf() * total_weight
+	var current_sum = 0.0
+	for i in range(available.size()):
+		current_sum += weights[i]
+		if roll <= current_sum:
+			return available[i]
 	
 	return available[randi() % available.size()]
 

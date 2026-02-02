@@ -7,6 +7,11 @@ extends StaticBody2D
 var current_shape: ObstaclePattern.SHAPE = ObstaclePattern.SHAPE.RECTANGLE
 var current_height: float = 80.0
 
+func _ready():
+	if has_node("/root/Game/GameManager"):
+		var gm = get_node("/root/Game/GameManager")
+		speed = gm.get_current_speed()
+
 func _process(delta):
 	if moving:
 		position.x -= speed * delta

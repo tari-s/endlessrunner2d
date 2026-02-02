@@ -6,6 +6,11 @@ extends StaticBody2D
 @export var moving := true
 @export var speed := 250
 
+func _ready():
+	if has_node("/root/Game/GameManager"):
+		var gm = get_node("/root/Game/GameManager")
+		speed = gm.get_current_speed()
+
 func _process(delta):
 	if moving:
 		position.x -= speed * delta

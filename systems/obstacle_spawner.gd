@@ -6,9 +6,8 @@ class_name ObstacleSpawner
 @export var spawn_interval: float = 1.5  # Time between patterns
 @export var spawn_x_position: float = 1300  # Where to spawn (off-screen right)
 @export var initial_difficulty: int = 1
-@export var difficulty_increase_interval: float = 10.0  # Seconds until difficulty increases
-
-@export var min_gap: float = 100.0         # Minimum horizontal gap between patterns
+@export var min_gap: float = 200.0         # Baseline gap
+@export var max_gap_shrink: float = 0.5    # Shrink to 50% of baseline
 
 var pattern_manager: PatternManager
 var spawn_timer: Timer
@@ -29,12 +28,8 @@ func _ready():
 	# Start initial spawn
 	_on_spawn_timer_timeout()
 	
-	# Setup difficulty timer
-	difficulty_timer = Timer.new()
-	difficulty_timer.wait_time = difficulty_increase_interval
-	difficulty_timer.timeout.connect(_on_difficulty_timer_timeout)
-	add_child(difficulty_timer)
-	difficulty_timer.start()
+	# Initial spawn
+	_on_spawn_timer_timeout()
 	
 	current_difficulty = initial_difficulty
 
@@ -46,10 +41,22 @@ func _on_spawn_timer_timeout():
 		var game_manager = get_node("../GameManager")
 		if game_manager and game_manager.is_playing():
 			var pattern_width = spawn_pattern()
-			# Calculate time for this pattern to clear the spawn point + gap
-			# Use default speed 250 if not found
-			var speed = 250.0
-			wait_time = (pattern_width + min_gap) / speed
+			
+			var difficulty = game_manager.difficulty_factor
+			var speed = game_manager.get_current_speed()
+			
+			# Scale gap based on difficulty
+			var gap = min_gap * lerp(1.0, max_gap_shrink, difficulty)
+			
+			wait_time = (pattern_width + gap) / speed
+			
+			# Update complexity difficulty (1-3) based on factor
+			if difficulty < 0.33:
+				current_difficulty = 1
+			elif difficulty < 0.66:
+				current_difficulty = 2
+			else:
+				current_difficulty = 3
 	
 	spawn_timer.start(wait_time)
 
@@ -63,8 +70,12 @@ func spawn_pattern() -> float:
 		push_error("ObstacleSpawner: obstacle_scene not assigned!")
 		return 40.0
 	
-	# Get a random pattern based on current difficulty
-	var pattern = pattern_manager.get_random_pattern(current_difficulty)
+	# Get a random pattern based on current difficulty and powerup bias
+	var powerup_bias = 0.0
+	if has_node("../GameManager"):
+		powerup_bias = get_node("../GameManager").difficulty_factor
+		
+	var pattern = pattern_manager.get_random_pattern(current_difficulty, powerup_bias)
 	
 	if pattern == null:
 		return 40.0

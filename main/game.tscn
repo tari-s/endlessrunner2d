@@ -1,13 +1,13 @@
-[gd_scene load_steps=12 format=3 uid="uid://b18jjbobcv68o"]
+[gd_scene load_steps=16 format=3 uid="uid://b18jjbobcv68o"]
 
-[ext_resource type="Script" path="res://main/game.gd" id="1_ryrav"]
+[ext_resource type="Script" uid="uid://cn6ulq2sbejg7" path="res://main/game.gd" id="1_ryrav"]
 [ext_resource type="PackedScene" uid="uid://bkueuohdyhj7q" path="res://entities/player/player.tscn" id="2_player"]
-[ext_resource type="Script" path="res://entities/environment/ceiling.gd" id="3_7jktm"]
+[ext_resource type="Script" uid="uid://dge7pqo288vcw" path="res://entities/environment/ceiling.gd" id="3_7jktm"]
 [ext_resource type="AudioStream" uid="uid://bg33ntrxiup4l" path="res://assets/audio/explosion.mp3" id="4_hve3p"]
-[ext_resource type="Script" path="res://entities/environment/floor.gd" id="5_ryrav"]
+[ext_resource type="Script" uid="uid://bf2wrtan650he" path="res://entities/environment/floor.gd" id="5_ryrav"]
 [ext_resource type="PackedScene" uid="uid://bm6otxrfdubws" path="res://entities/obstacles/obstacle.tscn" id="6_spawner"]
-[ext_resource type="Script" path="res://systems/obstacle_spawner.gd" id="7_spawner"]
-[ext_resource type="Script" path="res://systems/game_manager.gd" id="8_manager"]
+[ext_resource type="Script" uid="uid://dnt5rmjfeyeaf" path="res://systems/obstacle_spawner.gd" id="7_spawner"]
+[ext_resource type="Script" uid="uid://bn341nfm3crix" path="res://systems/game_manager.gd" id="8_manager"]
 [ext_resource type="PackedScene" uid="uid://cpxw8y6u5n8r1" path="res://entities/obstacles/multiplier.tscn" id="9_mult"]
 [ext_resource type="AudioStream" uid="uid://beaalq00t7nwf" path="res://assets/audio/power-up.mp3" id="10_mult_sound"]
 [ext_resource type="PackedScene" uid="uid://dqw8x7y605t4u" path="res://ui/start_screen.tscn" id="11_start"]
@@ -84,7 +84,6 @@ obstacle_scene = ExtResource("6_spawner")
 multiplier_scene = ExtResource("9_mult")
 spawn_interval = 1.0
 spawn_x_position = 1200.0
-difficulty_increase_interval = 5.0
 
 [node name="StartScreen" parent="." instance=ExtResource("11_start")]
 
