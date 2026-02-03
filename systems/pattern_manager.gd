@@ -83,14 +83,14 @@ func _create_difficulty_1_patterns():
 	var pattern1 = ObstaclePattern.new()
 	pattern1.pattern_name = "Low Single"
 	pattern1.difficulty = 1
-	_add_obs(pattern1, 400, 0.0, 80.0, true, ObstaclePattern.COLOR_DEADLY)
+	_add_obs(pattern1, 500, 0.0, 80.0, true, ObstaclePattern.COLOR_DEADLY)
 	_patterns.append(pattern1)
 	
 	# Pattern 2: Single High Obstacle
 	var pattern2 = ObstaclePattern.new()
 	pattern2.pattern_name = "High Single"
 	pattern2.difficulty = 1
-	_add_obs(pattern2, 200, 0.0, 80.0, true, ObstaclePattern.COLOR_DEADLY)
+	_add_obs(pattern2, 100, 0.0, 80.0, true, ObstaclePattern.COLOR_DEADLY)
 	_patterns.append(pattern2)
 	
 	# Pattern 3: Single Middle Obstacle
@@ -112,8 +112,8 @@ func _create_difficulty_2_patterns():
 	var pattern4 = ObstaclePattern.new()
 	pattern4.pattern_name = "Top-Bottom Gap"
 	pattern4.difficulty = 2
-	_add_obs(pattern4, 120, 0.0, 80.0, true, ObstaclePattern.COLOR_DEADLY)
-	_add_obs(pattern4, 480, 0.0, 80.0, true, ObstaclePattern.COLOR_DEADLY)
+	_add_obs(pattern4, 100, 0.0, 80.0, true, ObstaclePattern.COLOR_DEADLY)
+	_add_obs(pattern4, 500, 0.0, 80.0, true, ObstaclePattern.COLOR_DEADLY)
 	_patterns.append(pattern4)
 	
 	# Pattern 5: Staircase Up
@@ -138,8 +138,8 @@ func _create_difficulty_2_patterns():
 	var pattern10 = ObstaclePattern.new()
 	pattern10.pattern_name = "Safe Tunnel"
 	pattern10.difficulty = 2
-	_add_obs(pattern10, 100, 0.0, 120.0, false, ObstaclePattern.COLOR_SAFE)
-	_add_obs(pattern10, 440, 0.0, 120.0, false, ObstaclePattern.COLOR_SAFE)
+	_add_obs(pattern10, 150, 0.0, 120.0, false, ObstaclePattern.COLOR_SAFE)
+	_add_obs(pattern10, 450, 0.0, 120.0, false, ObstaclePattern.COLOR_SAFE)
 	_patterns.append(pattern10)
 
 func _create_difficulty_3_patterns():
@@ -157,7 +157,7 @@ func _create_difficulty_3_patterns():
 	pattern8.pattern_name = "Narrow Corridor"
 	pattern8.difficulty = 3
 	_add_obs(pattern8, 100, 0.0, 120.0, true, ObstaclePattern.COLOR_DEADLY)
-	_add_obs(pattern8, 440, 0.0, 120.0, true, ObstaclePattern.COLOR_DEADLY)
+	_add_obs(pattern8, 450, 0.0, 120.0, true, ObstaclePattern.COLOR_DEADLY)
 	_patterns.append(pattern8)
 
 	# Pattern 11: Multiplier Intro
