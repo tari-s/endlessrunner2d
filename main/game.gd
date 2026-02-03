@@ -1,18 +1,21 @@
 extends Node
 
+# ============================================================================
+# CONSTANTS
+# ============================================================================
+
 const WORLD_WIDTH := 1200
 const WORLD_HEIGHT := 600
 
-@onready var spawner = $ObstacleSpawner
+# ============================================================================
+# PRIVATE VARIABLES
+# ============================================================================
 
-# Optional: Control spawning based on game state
-func pause_game():
-	if spawner:
-		spawner.pause_spawning()
+@onready var _spawner = $ObstacleSpawner
 
-func resume_game():
-	if spawner:
-		spawner.resume_spawning()
+# ============================================================================
+# LIFECYCLE METHODS
+# ============================================================================
 
 func _ready():
 	# Initially hide HUD
@@ -39,6 +42,22 @@ func _ready():
 		# Hide individual elements initially
 		if has_node("HUD/ScoreLabel"): $HUD/ScoreLabel.hide()
 
+# ============================================================================
+# PUBLIC API
+# ============================================================================
+
+func pause_game():
+	if _spawner:
+		_spawner.pause_spawning()
+
+func resume_game():
+	if _spawner:
+		_spawner.resume_spawning()
+
+# ============================================================================
+# SIGNAL HANDLERS
+# ============================================================================
+
 func _on_game_started():
 	if has_node("HUD/ScoreLabel"):
 		$HUD/ScoreLabel.show()
@@ -60,10 +79,10 @@ func _on_score_updated(new_score: int):
 func _on_multiplier_status_changed(active: bool, value: float):
 	if has_node("HUD/ScoreLabel"):
 		var label = get_node("HUD/ScoreLabel")
-		var target_color = Color(1, 1, 1) # White (Normal)
+		var target_color = Color(1, 1, 1)  # White (Normal)
 		
 		if active:
-			if value >= 4.9: # Buffer for float precision
+			if value >= 4.9:  # Buffer for float precision
 				target_color = ObstaclePattern.COLOR_SUPER_MULTIPLIER
 			elif value >= 1.9:
 				target_color = ObstaclePattern.COLOR_MULTIPLIER

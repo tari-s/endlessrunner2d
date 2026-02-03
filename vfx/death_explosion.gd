@@ -1,5 +1,9 @@
 extends Node2D
 
+# ============================================================================
+# LIFECYCLE METHODS
+# ============================================================================
+
 func _ready():
 	# Start all particle systems
 	for child in get_children():
@@ -10,6 +14,3 @@ func _ready():
 	# Use a timer that works even when paused
 	await get_tree().create_timer(1.2, true, false, true).timeout
 	queue_free()
-
-
-   

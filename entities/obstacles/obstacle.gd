@@ -1,5 +1,9 @@
 extends StaticBody2D
 
+# ============================================================================
+# EXPORTS
+# ============================================================================
+
 @export var deadly := true  # Collision = Game Over
 @export var moving := false
 @export var speed := 250
@@ -7,10 +11,18 @@ extends StaticBody2D
 @export var move_speed: float = 100.0
 @export var move_range: float = 150.0
 
+# ============================================================================
+# PUBLIC VARIABLES
+# ============================================================================
+
 var spawn_y: float = 0.0
 var move_time: float = 0.0
 var current_shape: ObstaclePattern.SHAPE = ObstaclePattern.SHAPE.RECTANGLE
 var current_height: float = 80.0
+
+# ============================================================================
+# LIFECYCLE METHODS
+# ============================================================================
 
 func _ready():
 	if has_node("/root/Game/GameManager"):
@@ -41,6 +53,10 @@ func _process(delta):
 		if position.x < -100:
 			queue_free()
 
+# ============================================================================
+# PUBLIC API
+# ============================================================================
+
 func set_height(new_height: float):
 	current_height = new_height
 	update_shape()
@@ -50,6 +66,25 @@ func set_shape(new_shape: ObstaclePattern.SHAPE):
 	update_shape()
 
 func update_shape():
+	var points = _generate_shape_points()
+	
+	if has_node("Polygon2D"):
+		get_node("Polygon2D").polygon = points
+		
+	if has_node("CollisionPolygon2D"):
+		get_node("CollisionPolygon2D").polygon = points
+		
+	if has_node("Border"):
+		var border = get_node("Border")
+		var border_points = points.duplicate()
+		border_points.append(points[0])  # Close the loop
+		border.points = border_points
+
+# ============================================================================
+# PRIVATE HELPERS
+# ============================================================================
+
+func _generate_shape_points() -> PackedVector2Array:
 	var points = PackedVector2Array()
 	var half_h = current_height / 2.0
 	var w = 40.0
@@ -104,14 +139,14 @@ func update_shape():
 				Vector2(-half_w, half_h * 0.5),
 				Vector2(-half_w, -half_h * 0.5)
 			])
-		ObstaclePattern.SHAPE.TRAPEZOID_A: # Wide bottom
+		ObstaclePattern.SHAPE.TRAPEZOID_A:  # Wide bottom
 			points = PackedVector2Array([
 				Vector2(-half_w * 0.5, -half_h),
 				Vector2(half_w * 0.5, -half_h),
 				Vector2(half_w, half_h),
 				Vector2(-half_w, half_h)
 			])
-		ObstaclePattern.SHAPE.TRAPEZOID_B: # Wide top
+		ObstaclePattern.SHAPE.TRAPEZOID_B:  # Wide top
 			points = PackedVector2Array([
 				Vector2(-half_w, -half_h),
 				Vector2(half_w, -half_h),
@@ -128,14 +163,4 @@ func update_shape():
 				var r_h = half_h * randf_range(0.7, 1.3)
 				points.append(Vector2(cos(angle) * r_w, sin(angle) * r_h))
 	
-	if has_node("Polygon2D"):
-		get_node("Polygon2D").polygon = points
-		
-	if has_node("CollisionPolygon2D"):
-		get_node("CollisionPolygon2D").polygon = points
-		
-	if has_node("Border"):
-		var border = get_node("Border")
-		var border_points = points.duplicate()
-		border_points.append(points[0]) # Close the loop
-		border.points = border_points
+	return points

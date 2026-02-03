@@ -1,10 +1,18 @@
 extends StaticBody2D
 
+# ============================================================================
+# EXPORTS
+# ============================================================================
+
 @export var deadly := false
 @export var is_powerup := true
 @export var powerup_type := "multiplier"
 @export var moving := true
 @export var speed := 250
+
+# ============================================================================
+# LIFECYCLE METHODS
+# ============================================================================
 
 func _ready():
 	if has_node("/root/Game/GameManager"):

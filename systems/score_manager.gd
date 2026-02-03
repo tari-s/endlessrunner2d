@@ -1,24 +1,40 @@
 extends Node
 class_name ScoreManager
 
-# Signals
-signal score_updated(new_score: int)
-signal multiplier_status_changed(active: bool, value: float)
+# ============================================================================
+# CONSTANTS
+# ============================================================================
 
-# Score System
-var score: float = 0.0
+const SAVE_PATH = "user://high_score.save"
+
+# ============================================================================
+# EXPORTS
+# ============================================================================
+
 @export var score_speed: float = 10.0  # Points per second
 
-# Multiplier System
+# ============================================================================
+# PUBLIC VARIABLES
+# ============================================================================
+
+var score: float = 0.0
 var current_multiplier: float = 1.0
 var multiplier_time_left: float = 0.0
-
-# High Score Persistence
 var high_score: int = 0
-const SAVE_PATH = "user://high_score.save"
 
 # Manager References
 var audio_manager: AudioManager
+
+# ============================================================================
+# SIGNALS
+# ============================================================================
+
+signal score_updated(new_score: int)
+signal multiplier_status_changed(active: bool, value: float)
+
+# ============================================================================
+# LIFECYCLE METHODS
+# ============================================================================
 
 func _ready():
 	load_high_score()
@@ -28,12 +44,6 @@ func _ready():
 	# Get AudioManager reference
 	if has_node("../AudioManager"):
 		audio_manager = get_node("../AudioManager")
-
-func reset():
-	score = 0.0
-	current_multiplier = 1.0
-	multiplier_time_left = 0.0
-	score_updated.emit(0)
 
 func _process(delta: float):
 	# Handle Multiplier Timer
@@ -50,6 +60,16 @@ func _process(delta: float):
 		if gm.is_playing():
 			score += score_speed * delta * current_multiplier
 			score_updated.emit(int(score))
+
+# ============================================================================
+# PUBLIC API
+# ============================================================================
+
+func reset():
+	score = 0.0
+	current_multiplier = 1.0
+	multiplier_time_left = 0.0
+	score_updated.emit(0)
 
 func activate_multiplier(duration: float = 5.0, value: float = 2.0):
 	current_multiplier = value
@@ -68,6 +88,10 @@ func finalize_score() -> int:
 		high_score = final_score
 		save_high_score()
 	return final_score
+
+# ============================================================================
+# PRIVATE HELPERS - Persistence
+# ============================================================================
 
 func save_high_score():
 	var config = ConfigFile.new()

@@ -1,5 +1,9 @@
 extends CanvasLayer
 
+# ============================================================================
+# LIFECYCLE METHODS
+# ============================================================================
+
 func _ready():
 	hide()  # Hidden by default
 	
@@ -10,7 +14,11 @@ func _ready():
 
 func _input(event):
 	if visible and event.is_action_pressed("ui_accept"):
-		restart_game()
+		_restart_game()
+
+# ============================================================================
+# SIGNAL HANDLERS
+# ============================================================================
 
 func _on_game_over():
 	show()
@@ -34,7 +42,11 @@ func _on_game_over():
 		else:
 			high_score_label.add_theme_color_override("font_color", Color(0.8, 0.8, 0.8))
 
-func restart_game():
+# ============================================================================
+# PRIVATE HELPERS
+# ============================================================================
+
+func _restart_game():
 	var game_manager = get_node("../GameManager")
 	if game_manager:
 		game_manager.restart_game()

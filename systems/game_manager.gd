@@ -1,34 +1,48 @@
 extends Node
 
-# Game states
+# ============================================================================
+# ENUMS
+# ============================================================================
+
 enum GameState {
 	MENU,
 	PLAYING,
 	GAME_OVER
 }
 
+# ============================================================================
+# EXPORTS
+# ============================================================================
+
+@export var base_speed: float = 250.0
+@export var max_speed: float = 850.0
+@export var difficulty_ramp_seconds: float = 45.0
+
+# ============================================================================
+# PUBLIC VARIABLES
+# ============================================================================
+
 var current_state: GameState = GameState.MENU
 static var is_restarting: bool = false
+
+var difficulty_factor: float = 0.0  # 0.0 (start) to 1.0 (max)
+var elapsed_play_time: float = 0.0
 
 # Manager References
 var score_manager: ScoreManager
 var audio_manager: AudioManager
 
-# Signals for UI to listen to
+# ============================================================================
+# SIGNALS
+# ============================================================================
+
 signal game_started
 signal game_over
 signal game_restarted
 
-# Difficulty System
-@export var base_speed: float = 250.0
-@export var max_speed: float = 850.0
-@export var difficulty_ramp_seconds: float = 45.0
-
-var difficulty_factor: float = 0.0 # 0.0 (start) to 1.0 (max)
-var elapsed_play_time: float = 0.0
-
-func get_current_speed() -> float:
-	return lerp(base_speed, max_speed, difficulty_factor)
+# ============================================================================
+# LIFECYCLE METHODS
+# ============================================================================
 
 func _ready():
 	process_mode = Node.PROCESS_MODE_ALWAYS  # Always process, even when paused
@@ -42,6 +56,16 @@ func _ready():
 	if is_restarting:
 		call_deferred("start_game")
 		is_restarting = false
+
+func _process(delta: float):
+	if current_state == GameState.PLAYING:
+		# Update Difficulty
+		elapsed_play_time += delta
+		difficulty_factor = clamp(elapsed_play_time / difficulty_ramp_seconds, 0.0, 1.0)
+
+# ============================================================================
+# PUBLIC API - State Management
+# ============================================================================
 
 func start_game():
 	current_state = GameState.PLAYING
@@ -91,11 +115,12 @@ func show_menu():
 	get_tree().paused = true
 	print("Showing menu")
 
+# ============================================================================
+# PUBLIC API - Getters
+# ============================================================================
+
 func is_playing() -> bool:
 	return current_state == GameState.PLAYING
 
-func _process(delta: float):
-	if current_state == GameState.PLAYING:
-		# Update Difficulty
-		elapsed_play_time += delta
-		difficulty_factor = clamp(elapsed_play_time / difficulty_ramp_seconds, 0.0, 1.0)
+func get_current_speed() -> float:
+	return lerp(base_speed, max_speed, difficulty_factor)
