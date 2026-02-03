@@ -9,8 +9,11 @@ const COLOR_PURPLE = Color(0.7, 0.2, 0.9)
 func _ready():
 	if has_node("../GameManager"):
 		var gm = get_node("../GameManager")
-		gm.multiplier_status_changed.connect(_on_multiplier_changed)
 		gm.game_started.connect(_on_game_started)
+	
+	if has_node("../ScoreManager"):
+		var sm = get_node("../ScoreManager")
+		sm.multiplier_status_changed.connect(_on_multiplier_changed)
 	
 	# Reset trail color and ship visibility
 	_on_multiplier_changed(false, 1.0)
@@ -62,8 +65,8 @@ func check_collisions():
 				if collider.powerup_type == "multiplier_5x":
 					mult_value = 5.0
 				
-				if has_node("../GameManager"):
-					get_node("../GameManager").activate_multiplier(5.0, mult_value)
+				if has_node("../ScoreManager"):
+					get_node("../ScoreManager").activate_multiplier(5.0, mult_value)
 				
 				print("Collected Multiplier: ", mult_value, "x (Type: ", collider.powerup_type, ")")
 				
