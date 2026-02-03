@@ -10,8 +10,8 @@ point_count = 2
 offsets = PackedFloat32Array(0, 1)
 colors = PackedColorArray(0.6, 0.7, 1, 1, 0.6, 0.7, 1, 0)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_y32ns"]
-size = Vector2(40, 40)
+[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_ship"]
+points = PackedVector2Array(40, 20, 0, 5, 12, 20, 0, 35)
 
 [node name="Player" type="CharacterBody2D"]
 script = ExtResource("1_feb5d")
@@ -49,5 +49,4 @@ begin_cap_mode = 2
 end_cap_mode = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(20, 20)
-shape = SubResource("RectangleShape2D_y32ns")
+shape = SubResource("ConvexPolygonShape2D_ship")
