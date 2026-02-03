@@ -3,7 +3,12 @@ extends StaticBody2D
 @export var deadly := true  # Collision = Game Over
 @export var moving := false
 @export var speed := 250
+@export var move_type: ObstaclePattern.MOVE_TYPE = ObstaclePattern.MOVE_TYPE.NONE
+@export var move_speed: float = 100.0
+@export var move_range: float = 150.0
 
+var spawn_y: float = 0.0
+var move_time: float = 0.0
 var current_shape: ObstaclePattern.SHAPE = ObstaclePattern.SHAPE.RECTANGLE
 var current_height: float = 80.0
 
@@ -11,10 +16,36 @@ func _ready():
 	if has_node("/root/Game/GameManager"):
 		var gm = get_node("/root/Game/GameManager")
 		speed = gm.get_current_speed()
+	
+	spawn_y = position.y
 
 func _process(delta):
 	if moving:
+		# Horizontal movement
 		position.x -= speed * delta
+		
+		# Vertical movement
+		move_time += delta
+		match move_type:
+			ObstaclePattern.MOVE_TYPE.TOP_TO_BOTTOM:
+				position.y += move_speed * delta
+				if position.y > spawn_y + move_range:
+					position.y = spawn_y + move_range
+			ObstaclePattern.MOVE_TYPE.BOTTOM_TO_TOP:
+				position.y -= move_speed * delta
+				if position.y < spawn_y - move_range:
+					position.y = spawn_y - move_range
+			ObstaclePattern.MOVE_TYPE.OSCILLATING:
+				position.y = spawn_y + sin(move_time * (move_speed / 50.0)) * move_range
+		
+		# Visual Pulsing for moving obstacles
+		if move_type != ObstaclePattern.MOVE_TYPE.NONE:
+			var pulse = 1.0 + sin(move_time * 10.0) * 0.1
+			if has_node("Polygon2D"):
+				get_node("Polygon2D").scale = Vector2(pulse, pulse)
+			elif has_node("ColorRect"):
+				get_node("ColorRect").scale = Vector2(pulse, pulse)
+
 		if position.x < -100:
 			queue_free()
 

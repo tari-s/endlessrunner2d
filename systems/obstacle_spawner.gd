@@ -51,9 +51,10 @@ func _on_spawn_timer_timeout():
 			wait_time = (pattern_width + gap) / speed
 			
 			# Update complexity difficulty (1-3) based on factor
-			if difficulty < 0.33:
+			# Reduced thresholds for testing moving obstacles
+			if difficulty < 0.1:
 				current_difficulty = 1
-			elif difficulty < 0.66:
+			elif difficulty < 0.2:
 				current_difficulty = 2
 			else:
 				current_difficulty = 3
@@ -133,6 +134,10 @@ func spawn_pattern() -> float:
 				border_color = ObstaclePattern.COLOR_SUPER_MULTIPLIER_BORDER
 			elif obstacle_data.powerup_type.begins_with("multiplier"):
 				border_color = ObstaclePattern.COLOR_MULTIPLIER_BORDER
+			elif obstacle_data.move_type == ObstaclePattern.MOVE_TYPE.OSCILLATING:
+				border_color = ObstaclePattern.COLOR_OSCILLATING_BORDER
+			elif obstacle_data.move_type != ObstaclePattern.MOVE_TYPE.NONE:
+				border_color = ObstaclePattern.COLOR_MOVING_BORDER
 			elif not obstacle_data.deadly:
 				border_color = ObstaclePattern.COLOR_SAFE_BORDER
 			
@@ -149,6 +154,14 @@ func spawn_pattern() -> float:
 		# Enable movement (check if property exists)
 		if "moving" in obstacle:
 			obstacle.moving = true
+			
+		# Set movement properties
+		if "move_type" in obstacle:
+			obstacle.move_type = obstacle_data.move_type
+		if "move_speed" in obstacle:
+			obstacle.move_speed = obstacle_data.move_speed
+		if "move_range" in obstacle:
+			obstacle.move_range = obstacle_data.move_range
 		
 		# Add to scene
 		get_parent().add_child(obstacle)

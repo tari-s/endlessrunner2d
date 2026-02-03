@@ -30,6 +30,23 @@ func _add_obs(pattern: ObstaclePattern, y: float, x: float = 0.0, h: float = 80.
 	
 	pattern.obstacles.append(ObstaclePattern.ObstacleData.new(y, x, h, is_deadly, col, p_type, shape))
 
+func _add_moving_obs(pattern: ObstaclePattern, y: float, x: float = 0.0, h: float = 80.0, m_type: ObstaclePattern.MOVE_TYPE = ObstaclePattern.MOVE_TYPE.NONE, m_speed: float = 100.0, m_range: float = 150.0):
+	var shape = ObstaclePattern.SHAPE.RECTANGLE
+	var col = ObstaclePattern.COLOR_DEADLY
+	
+	match m_type:
+		ObstaclePattern.MOVE_TYPE.TOP_TO_BOTTOM:
+			shape = ObstaclePattern.SHAPE.TRIANGLE_DOWN
+			col = ObstaclePattern.COLOR_MOVING
+		ObstaclePattern.MOVE_TYPE.BOTTOM_TO_TOP:
+			shape = ObstaclePattern.SHAPE.TRIANGLE_UP
+			col = ObstaclePattern.COLOR_MOVING
+		ObstaclePattern.MOVE_TYPE.OSCILLATING:
+			shape = ObstaclePattern.SHAPE.HEXAGON
+			col = ObstaclePattern.COLOR_OSCILLATING
+	
+	pattern.obstacles.append(ObstaclePattern.ObstacleData.new(y, x, h, true, col, "", shape, m_type, m_speed, m_range))
+
 func _create_patterns():
 	# Pattern 1: Single Low Obstacle
 	var pattern1 = ObstaclePattern.new()
@@ -132,6 +149,32 @@ func _create_patterns():
 	pattern13.difficulty = 3
 	_add_obs(pattern13, 300, 0.0, 40.0, false, ObstaclePattern.COLOR_SUPER_MULTIPLIER, "multiplier_5x")
 	patterns.append(pattern13)
+	
+	# Pattern 14: Vertical Sentinel (Difficulty 3)
+	var pattern14 = ObstaclePattern.new()
+	pattern14.pattern_name = "Vertical Sentinel"
+	pattern14.difficulty = 3
+	_add_moving_obs(pattern14, 300, 0.0, 60.0, ObstaclePattern.MOVE_TYPE.OSCILLATING, 150.0, 100.0)
+	patterns.append(pattern14)
+	
+	# Pattern 15: Crusher Row (Difficulty 3)
+	var pattern15 = ObstaclePattern.new()
+	pattern15.pattern_name = "Crusher Row"
+	pattern15.difficulty = 3
+	_add_moving_obs(pattern15, 100, 0.0, 60.0, ObstaclePattern.MOVE_TYPE.TOP_TO_BOTTOM, 120.0, 150.0)
+	_add_moving_obs(pattern15, 500, 0.0, 60.0, ObstaclePattern.MOVE_TYPE.BOTTOM_TO_TOP, 120.0, 150.0)
+	_add_moving_obs(pattern15, 100, 300.0, 60.0, ObstaclePattern.MOVE_TYPE.TOP_TO_BOTTOM, 120.0, 150.0)
+	_add_moving_obs(pattern15, 500, 300.0, 60.0, ObstaclePattern.MOVE_TYPE.BOTTOM_TO_TOP, 120.0, 150.0)
+	patterns.append(pattern15)
+	
+	# Pattern 16: Oscillating Wall (Difficulty 3)
+	var pattern16 = ObstaclePattern.new()
+	pattern16.pattern_name = "Oscillating Wall"
+	pattern16.difficulty = 3
+	_add_moving_obs(pattern16, 200, 0.0, 80.0, ObstaclePattern.MOVE_TYPE.OSCILLATING, 100.0, 50.0)
+	_add_moving_obs(pattern16, 400, 200.0, 80.0, ObstaclePattern.MOVE_TYPE.OSCILLATING, 100.0, 50.0)
+	_add_moving_obs(pattern16, 200, 400.0, 80.0, ObstaclePattern.MOVE_TYPE.OSCILLATING, 100.0, 50.0)
+	patterns.append(pattern16)
 
 func get_random_pattern(max_difficulty: int = 3, powerup_bias: float = 0.0) -> ObstaclePattern:
 	# Filter patterns by difficulty

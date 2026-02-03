@@ -11,6 +11,17 @@ const COLOR_SAFE_BORDER = Color(0.05, 0.05, 0.05)
 const COLOR_MULTIPLIER_BORDER = Color(0.5, 0.4, 0.1)
 const COLOR_SUPER_MULTIPLIER_BORDER = Color(0.35, 0.1, 0.45)
 const COLOR_PLAYER_BORDER = Color(0.2, 0.2, 0.5)
+const COLOR_MOVING = Color(1.0, 0.5, 0.2) # Orange/Red
+const COLOR_MOVING_BORDER = Color(0.6, 0.2, 0.0)
+const COLOR_OSCILLATING = Color(0.2, 0.8, 1.0) # Cyan
+const COLOR_OSCILLATING_BORDER = Color(0.1, 0.4, 0.6)
+
+enum MOVE_TYPE {
+	NONE,
+	TOP_TO_BOTTOM,
+	BOTTOM_TO_TOP,
+	OSCILLATING
+}
 
 enum SHAPE {
 	RECTANGLE,
@@ -34,8 +45,11 @@ class ObstacleData:
 	var color: Color       # Visual color
 	var powerup_type: String = "" # Type of powerup if non-deadly
 	var shape: SHAPE = SHAPE.RECTANGLE
+	var move_type: MOVE_TYPE = MOVE_TYPE.NONE
+	var move_speed: float = 100.0
+	var move_range: float = 150.0 # Total travel distance or oscillation amplitude
 	
-	func _init(y: float, x: float = 0.0, h: float = 80.0, is_deadly: bool = true, col: Color = COLOR_DEADLY, p_type: String = "", s: SHAPE = SHAPE.RECTANGLE):
+	func _init(y: float, x: float = 0.0, h: float = 80.0, is_deadly: bool = true, col: Color = COLOR_DEADLY, p_type: String = "", s: SHAPE = SHAPE.RECTANGLE, m_type: MOVE_TYPE = MOVE_TYPE.NONE, m_speed: float = 100.0, m_range: float = 150.0):
 		y_position = y
 		x_offset = x
 		height = h
@@ -43,6 +57,9 @@ class ObstacleData:
 		color = col
 		powerup_type = p_type
 		shape = s
+		move_type = m_type
+		move_speed = m_speed
+		move_range = m_range
 
 # Array of obstacles in this pattern
 var obstacles: Array[ObstacleData] = []

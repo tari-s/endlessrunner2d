@@ -28,9 +28,9 @@ var current_multiplier: float = 1.0
 var multiplier_time_left: float = 0.0
 
 # Difficulty System
-@export var base_speed: float = 300.0
+@export var base_speed: float = 250.0
 @export var max_speed: float = 850.0
-@export var difficulty_ramp_seconds: float = 30.0
+@export var difficulty_ramp_seconds: float = 45.0
 
 var difficulty_factor: float = 0.0 # 0.0 (start) to 1.0 (max)
 var elapsed_play_time: float = 0.0
