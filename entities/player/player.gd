@@ -12,8 +12,15 @@ func _ready():
 		gm.multiplier_status_changed.connect(_on_multiplier_changed)
 		gm.game_started.connect(_on_game_started)
 	
+	# Reset trail color and ship visibility
+	_on_multiplier_changed(false, 1.0)
+	
+	if has_node("ShipVisual"): $ShipVisual.show()
+	if has_node("ShipOutline"): $ShipOutline.show()
 	if has_node("TrailParticles"):
 		$TrailParticles.emitting = true
+	
+	set_physics_process(true)
 
 func _physics_process(delta):
 	# Only move if game is playing (if GameManager exists)
@@ -21,12 +28,6 @@ func _physics_process(delta):
 		var game_manager = get_node("../GameManager")
 		if game_manager and not game_manager.is_playing():
 			return
-	
-	# Reset visuals if they were hidden in game_over
-	if has_node("ShipVisual"): $ShipVisual.show()
-	if has_node("ShipOutline"): $ShipOutline.show()
-	if has_node("TrailParticles"): $TrailParticles.emitting = true
-	set_physics_process(true)
 	
 	velocity.x = 0
 	velocity.y = 0
@@ -126,6 +127,10 @@ func game_over():
 		get_tree().reload_current_scene()
 
 func _on_game_started():
+	if has_node("ShipVisual"): $ShipVisual.show()
+	if has_node("ShipOutline"): $ShipOutline.show()
+	set_physics_process(true)
+	
 	if has_node("TrailParticles"):
 		$TrailParticles.emitting = true
 		_on_multiplier_changed(false, 1.0) # Reset color

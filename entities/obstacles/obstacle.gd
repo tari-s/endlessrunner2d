@@ -38,14 +38,6 @@ func _process(delta):
 			ObstaclePattern.MOVE_TYPE.OSCILLATING:
 				position.y = spawn_y + sin(move_time * (move_speed / 50.0)) * move_range
 		
-		# Visual Pulsing for moving obstacles
-		if move_type != ObstaclePattern.MOVE_TYPE.NONE:
-			var pulse = 1.0 + sin(move_time * 10.0) * 0.1
-			if has_node("Polygon2D"):
-				get_node("Polygon2D").scale = Vector2(pulse, pulse)
-			elif has_node("ColorRect"):
-				get_node("ColorRect").scale = Vector2(pulse, pulse)
-
 		if position.x < -100:
 			queue_free()
 

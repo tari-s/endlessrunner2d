@@ -214,9 +214,9 @@ func get_random_pattern(max_difficulty: int = 3, powerup_bias: float = 0.0) -> O
 	
 	return available[randi() % available.size()]
 
-func get_pattern_by_name(name: String) -> ObstaclePattern:
+func get_pattern_by_name(p_name: String) -> ObstaclePattern:
 	for pattern in patterns:
-		if pattern.pattern_name == name:
+		if pattern.pattern_name == p_name:
 			return pattern
 	return null
 

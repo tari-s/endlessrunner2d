@@ -1,7 +1,7 @@
 [gd_scene load_steps=16 format=3 uid="uid://b18jjbobcv68o"]
 
 [ext_resource type="Script" uid="uid://cn6ulq2sbejg7" path="res://main/game.gd" id="1_ryrav"]
-[ext_resource type="PackedScene" uid="uid://bkueuohdyhj7q" path="res://entities/player/player.tscn" id="2_player"]
+[ext_resource type="PackedScene" path="res://entities/player/player.tscn" id="2_player"]
 [ext_resource type="Script" uid="uid://dge7pqo288vcw" path="res://entities/environment/ceiling.gd" id="3_7jktm"]
 [ext_resource type="AudioStream" uid="uid://bg33ntrxiup4l" path="res://assets/audio/explosion.mp3" id="4_hve3p"]
 [ext_resource type="Script" uid="uid://bf2wrtan650he" path="res://entities/environment/floor.gd" id="5_ryrav"]
